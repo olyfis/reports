@@ -1,10 +1,7 @@
 td {
-  font-size: 11px;
+  font-size: 12px;
   font-weight: normal;
   margin-top: 5px;
-}
-table.nb, tr.nb, td.nb {
-	border: 0px;
 }
 table.a {
     table-layout: auto;  
@@ -19,66 +16,17 @@ tr.b {
     width: 20px;
     background-color: deepskyblue;
 }
-tr.b2 {
-    border: 1px solid black;
-    width: 20px;
-    background-color: deepskyblue;
-    font-size: 11px;
-}
-
-tr.b3, th.b3 {
-    border: 1px solid black;
-    width:30px;
-    background-color: deepskyblue;
-    font-size: 11px;
-}
-tr.b3a, th.b3a {
-    border: 1px solid black;
-    width:300px;
-    background-color: deepskyblue;
-    font-size: 11px;
-}
-tr.b4a, th.b4a {
-    border: 1px solid black;
-    width:400px;
-    background-color: deepskyblue;
-    font-size: 11px;
-}
-tr.a3a, th.a3a {
-    border: 1px solid black;
-    width:200px;
-    background-color: deepskyblue;
-    font-size: 11px;
-}
-
-
-
-tr.sml, th.sml {
-    border: 1px solid black;
-    width:20px;
-    background-color: deepskyblue;
-    font-size: 11px;
-}
-
-tr.med, th.med {
-    border: 1px solid black;
-    width:200px;
-    background-color: deepskyblue;
-    font-size: 11px;
-}
-
-tr.lrg, th.lrg {
-    border: 1px solid black;
-    width:500px;
-    background-color: deepskyblue;
-    font-size: 11px;
-}
-
-
 th, td {
     border: 1px solid black;
     width: 150px;
 }
+
+tr.b2 {
+    border: 1px solid black;
+    width: 20px;
+    background-color: #D7DBDD
+}
+
 th.c, td.c {
     border: 1px solid black;
     width: 300px;
@@ -105,7 +53,17 @@ table.tablesorter tbody tr.normal-row td {
 table.tablesorter tbody tr.alt-row td {
   background: #AEB6BF;
   color: #000;
-  width: 300px;
+}
+
+
+/* Extra selectors needed to override the default styling */
+table.tablesorter tbody tr.normal-row td {
+  background: #D7DBDD;
+  color: #000;
+}
+table.tablesorter tbody tr.alt-row td {
+  background: #AEB6BF;
+  color: #000;
 }
 
 
@@ -122,7 +80,6 @@ table.tablesorter tbody tr.alt-row td {
 	padding: 4px 18px 4px 4px;
 	white-space: normal;
 	cursor: pointer;
-	
 }
 .tablesorter-blue .headerSortUp,
 .tablesorter-blue .tablesorter-headerSortUp,

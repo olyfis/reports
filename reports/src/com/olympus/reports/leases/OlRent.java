@@ -44,8 +44,7 @@ public class OlRent extends HttpServlet {
 	static NodeList  node  = null;
 	static String s = null;
 	static private PreparedStatement statement;
-	static String propFile = "C:\\Java_Dev\\props\\unidata.prop";
-	
+	static String propFile = "C:\\Java_Dev\\props\\unidata.prop";	
 	static String sqlFile = "C:\\Java_Dev\\props\\sql\\OL_LRA.sql";
 	/****************************************************************************************************************************************************/
 	public static ArrayList<String> getDbData( String termDate) throws IOException {
@@ -62,13 +61,11 @@ public class OlRent extends HttpServlet {
 		Properties connectionProps = new Properties();
 		connectionProps.load(fis);
 		 
-		fr = new FileReader(new File(sqlFile));
-		
+		fr = new FileReader(new File(sqlFile));	
 		// be sure to not have line starting with "--" or "/*" or any other non alphabetical character
 		BufferedReader br = new BufferedReader(fr);
 		while((s = br.readLine()) != null){
-		      sb.append(s);
-		       
+		      sb.append(s);		       
 		}
 		br.close();
 		//displayProps(connectionProps);
@@ -103,7 +100,6 @@ public class OlRent extends HttpServlet {
 		return strArr;
 	}
 	/****************************************************************************************************************************************************/
-
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -118,7 +114,6 @@ public class OlRent extends HttpServlet {
 		String sqlFile = null;
 		String sep = null;
 		String contentType = "application/ms-excel";
-
 		ArrayList<String> strArr = new ArrayList<String>();
 		ArrayList<String> headerArr = new ArrayList<String>();
 		headerArr = Olyutil.readInputFile(headerFilenameBRSummary);
@@ -143,7 +138,7 @@ public class OlRent extends HttpServlet {
 		request.getSession().setAttribute(formUrl, formUrlValue);
 
 		request.getSession().setAttribute("strArr", strArr);
-		 // req.getSession().setAttribute(paramName, paramValue);
+		// req.getSession().setAttribute(paramName, paramValue);
 		//System.out.println("Begin forward to JSP");
 		dateFmt = Olyutil.formatDate("yyyy-MM-dd hh:mm:ss.SSS");
 		logger.info(dateFmt + ": " + "------------------Begin forward to: " + dispatchJSP);

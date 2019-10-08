@@ -20,7 +20,7 @@
 <script type="text/javascript" src="includes/js/tableFilter.js"></script>
 
 <style><%@include file="includes/css/header.css"%></style>
-<style><%@include file="includes/css/reports.css"%></style>
+ 
 <link rel="stylesheet" href="includes/css/calendar.css" />
 <style><%@include file="includes/css/table.css"%></style>
 
@@ -228,13 +228,13 @@ public String  buildCells(JspWriter out, ArrayList<String> dataArr  ) throws IOE
    
    
    
-			<div style="height: 500px; overflow: auto;">
+			<div style="height: 400px; overflow: auto;">
 				
 		
 	
-		<table  border="0" cellpadding="1" cellspacing="1">
-  <tr>
-    <td   >   
+		<table class="nb" border="0" cellpadding="1" cellspacing="1">
+  <tr class="nb">
+    <td  class="nb" >   
     <form name="excelForm" enctype="multipart/form-data" method="get" action="<%=formUrl%> " \>
     <input type="hidden" value="excel"  name="excel" />
     <input type="submit" value="Save Excel File" class="btn" /> 

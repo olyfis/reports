@@ -100,9 +100,6 @@ function ajaxFunction(){
 </h5>
 
 
-
- 
-
 <BR>
 
 <!--  action = servlet to call: http://localhost:8181/webreport/olrent?id=2019-08-31   -->
