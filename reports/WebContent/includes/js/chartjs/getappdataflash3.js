@@ -3,38 +3,50 @@ $( document ).ready(function() {
     console.log( "ready!" );
     $.ajax({
     	type: 'Get',
-        //url: 'http://cvyhj3a27:8181/webreport/getchart?cType=LHP',
+        //url: 'http://cvyhj3a27:8181/reports/flashsum',
     	
     	
-        url: 'http://localhost:8181/webreport/getchart?cType=LHP',
+        url: 'http://localhost:8181/reports/flashsum',
         
         dataType: "json",
         success: function(data) {
         	console.log(data);
-        	var os_arr = [];
-        	var mi_arr = [];
-        	var dr_arr = [];
-        	var ca_arr = [];
+        	var ms_arr = [];
+        	var mt_arr = [];
+        	var qs_arr = [];
+        	var qt_arr = [];
+        	var ys_arr = [];
+        	var yt_arr = [];
         	
-        	var ca_val = 0;
-        	var os_val = 0;
-        	var dr_val = 0;
-        	var mi_val = 0;
+        	var ms_val = 0;
+        	var mt_val = 0;
+        	var qs_val = 0;
+        	var qt_val = 0;
+        	var ys_val = 0;
+        	var yt_val = 0;
+         
+        	
+        	
         	
         	for (var i in data) {
-        		/*
-        		console.log("missinginfo:" + data[i].missinginfo);
-        		console.log("ordsubmit:" + data[i].ordsubmit);
-        		console.log("docreceived:" + data[i].docreceived);
-        		console.log("creditapproval:" + data[i].creditapproval);
-        		*/
         		
-        		os_arr.push(data[i].ordsubmit)
-        		mi_arr.push(data[i].missinginfo)
-        		dr_arr.push(data[i].docreceived)
-        		ca_arr.push(data[i].creditapproval)
+        		console.log("msSum:" + data[i].msSum);
+        		console.log("mtSum:" + data[i].mtSum);
+        		console.log("qsSum:" + data[i].qsSum);
+        		console.log("qtSum:" + data[i].qtSum);
+        		console.log("ysSum:" + data[i].ysSum);
+        		console.log("ytSum:" + data[i].ytSum);
         		
         		
+        		ms_arr.push(data[i].msSum)
+        	 	mt_arr.push(data[i].mtSum)
+        		qs_arr.push(data[i].qsSum)
+        	 	qt_arr.push(data[i].qtSum)
+        	 	ys_arr.push(data[i].ysSum)
+        	 	yt_arr.push(data[i].ytSum)
+        	 	
+        	 	
+        		/*	
         		os_val = data[i].Order_Submitted;
         		dr_val = data[i].Docs_Received;
         		mi_val = data[i].Doc_Missing_Info;
@@ -44,10 +56,16 @@ $( document ).ready(function() {
         		console.log("^^^^^ mi:" + mi_val);
         		//console.log("********** DR:" + data[i].Docs_Received);
         		//console.log("***********OS:" + data[i].Order_Submitted);
-        		
+        	*/	
         	}
-        	var os = os_arr[0];
-        	var dr = dr_arr[0];
+        	
+        	var ms = ms_arr[0];
+        	var mt = mt_arr[0];
+        	var qs = qs_arr[0];
+        	var qt = qt_arr[0];
+        	var ys = ys_arr[0];
+        	var yt = yt_arr[0];
+        	
         	 var color_arr = ["#08896d", "#ba1ece","#3c0889","#ad3432", "#3effcd","#fcba9f", "#bb9ccd", "#2effa3","#a00637","#ccc3f9", "#aac3f9",
          		"#b9e0aa", "#92efef", "#92a4ef", "#ef92a3", "#efcd92", "#7a6159", "#022311", "#d4d6c2", "#f7ad85", "#d5d4db"  ];
         	 var color_arr2 = ["#3effcd", "#e8aeef","#aa74e8","#e87d74", "#aac3f9",
@@ -58,7 +76,7 @@ $( document ).ready(function() {
      var config = {
       	  type: 'bar',
     	  data: {
-    	    labels: ['Submitted', 'Docs Received', 'Docs Missing Info', 'Need Credit Approval'],
+    	    labels: ['MTD Sales', 'MTD Target', 'QTD Sales', 'QTD Target', 'YTD Sales', 'YTD Target', ],
     	    
     	    /*
     	    datasets: [{
@@ -108,14 +126,10 @@ $( document ).ready(function() {
 	            	backgroundColor:color_arr,
 	            	label: 'Dollars',
 		      	      yAxisID: 'A',
-		      	      
-		      	      
-		      	      
-		      	      
-		      	      data: [os_arr[0], dr_arr[0], mi_arr[0], ca_arr[0]]	
+		      	      data: [ms_arr[0], mt_arr[0], qs_arr[0], qt_arr[0], ys_arr[0], yt_arr[0]]	
 	            	
 	            	
-	            },
+	            } /*,
 	            
 	            
 	            
@@ -123,9 +137,9 @@ $( document ).ready(function() {
 	            	backgroundColor:color_arr2,	
 	      	      label: 'Count',
 	      	      yAxisID: 'B',
-	      	      data: [os_val, dr_val, mi_val, ca_val]
+	      	      data: [ms_val, mt_val, qs_val, qt_val, ys_val, yt_val]
 	      	    }
-	            
+	            */
 	            
 	            
 	          ]
@@ -137,7 +151,7 @@ $( document ).ready(function() {
     	  options: {
     		  title: {
                   display: true,
-                  text: 'Leases in House - Processing Status'
+                  text: 'Flash Data'
               },
     	    scales: {
     	      yAxes: [
@@ -149,20 +163,12 @@ $( document ).ready(function() {
                             display: true,
                             ticks: {
                                 beginAtZero: true,
-                           
-                                callback: function(value, index, values) {
-                                    if(parseInt(value) >= 1000){
-                                      return '$' + value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-                                    } else {
-                                      return '$' + value;
-                                    }
-                                },
                                 //steps: 10,
                                 //stepValue: 5,
                                 //max: 35
                             }
     	    	  
-    	      }, {
+    	      } /*, {
     	        id: 'B',
     	        title: "Count",
     	        type: 'linear',
@@ -175,7 +181,7 @@ $( document ).ready(function() {
     	          
     	          
     	        }
-    	      }]
+    	      } */]
     	  
     	    }
     	  
@@ -184,7 +190,7 @@ $( document ).ready(function() {
      }      	
 /******************************************************************************************************************************************************************/
         	
-        	  var ctx = document.getElementById("mycanvasLHP").getContext("2d");
+        	  var ctx = document.getElementById("mycanvasFlash").getContext("2d");
               new Chart(ctx, config);
         	
         	//console.log("************** OS: " + os_arr[0] );
