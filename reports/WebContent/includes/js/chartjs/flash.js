@@ -80,14 +80,14 @@ $( document ).ready(function() {
      var config = {
       	  type: 'horizontalBar',
     	  data: {
-    	    labels: ['MTD Sales', 'MTD Target', 'QTD Sales', 'QTD Target'  ],
+    	    labels: ['MTD Sales', 'MTD Target', 'QTD Sales', 'QTD Target', 'YTD Sales', 'YTD Target', ],
     	    	    
     	    datasets: [	    	    	
 	            {
 	            	backgroundColor:color_arr,
 	            	label: 'Dollars',
 		      	      xAxisID: 'A',
-		      	      data: [ms_arr[0], mt_arr[0], qs_arr[0], qt_arr[0] ]	
+		      	      data: [ms_arr[0], mt_arr[0], qs_arr[0], qt_arr[0], ys_arr[0], yt_arr[0]]	
 	            } 
 	          ]    
     	  },
@@ -98,7 +98,7 @@ $( document ).ready(function() {
                   display: true,
                   fontStyle: 'bold',
                   fontSize: 20,
-                  text: 'Flash M-Q'
+                  text: 'Flash M-Q-Y'
               },
               
               
@@ -123,8 +123,8 @@ $( document ).ready(function() {
                                 beginAtZero: true,
                                 //steps: 1000000,
                                //stepValue: 1000000,
-                               stepSize: 100000,
-                                max: 35000000,
+                               stepSize: 10000000,
+                                max: 400000000,
                                callback: function(value, index, values) {              
                                      return '$' + value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
                                	}

@@ -71,23 +71,19 @@ $( document ).ready(function() {
         	 var color_arr2 = ["#3effcd", "#e8aeef","#aa74e8","#e87d74", "#aac3f9",
           		"#b9e0aa", "#92efef", "#92a4ef", "#ef92a3", "#efcd92", "#7a6159", "#022311", "#d4d6c2", "#f7ad85", "#d5d4db"  ];
         	 
- /******************************************************************************************************************************************************************/
-     	
-        	 
-        	 
         	 
 /******************************************************************************************************************************************************************/
      var config = {
-      	  type: 'horizontalBar',
+      	  type: 'bar',
     	  data: {
-    	    labels: ['MTD Sales', 'MTD Target', 'QTD Sales', 'QTD Target'  ],
+    	    labels: ['MTD Sales', 'MTD Target', 'QTD Sales', 'QTD Target', 'YTD Sales', 'YTD Target', ],
     	    	    
     	    datasets: [	    	    	
 	            {
 	            	backgroundColor:color_arr,
 	            	label: 'Dollars',
-		      	      xAxisID: 'A',
-		      	      data: [ms_arr[0], mt_arr[0], qs_arr[0], qt_arr[0] ]	
+		      	      yAxisID: 'A',
+		      	      data: [ms_arr[0], mt_arr[0], qs_arr[0], qt_arr[0], ys_arr[0], yt_arr[0]]	
 	            } 
 	          ]    
     	  },
@@ -98,20 +94,20 @@ $( document ).ready(function() {
                   display: true,
                   fontStyle: 'bold',
                   fontSize: 20,
-                  text: 'Flash M-Q'
+                  text: 'Flash M-Q-Y'
               },
               
               
               tooltips: {
                   mode: 'label',
-                   
+                  label: 'mylabel',
                   callbacks: {
                       label: function(tooltipItem, data) {
-                          return '$' + tooltipItem.xLabel.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","); }, },
+                          return '$' + tooltipItem.yLabel.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","); }, },
                },
      
     	    scales: {
-    	      xAxes: [
+    	      yAxes: [
     	    	  {
     	    	
     	    		  id: 'A',
@@ -123,8 +119,8 @@ $( document ).ready(function() {
                                 beginAtZero: true,
                                 //steps: 1000000,
                                //stepValue: 1000000,
-                               stepSize: 100000,
-                                max: 35000000,
+                               stepSize: 50000000,
+                                //max: 35
                                callback: function(value, index, values) {              
                                      return '$' + value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
                                	}
@@ -133,7 +129,20 @@ $( document ).ready(function() {
                                
                             }
     	    	  
-    	      } ]
+    	      } /*, {
+    	        id: 'B',
+    	        title: "Count",
+    	        type: 'linear',
+    	        position: 'right',
+    					ticks : {
+    	        	max: 60,
+    	          min: 0,
+    	          stepSize: 20,
+    	          
+    	          
+    	          
+    	        }
+    	      } */]
     	  
     	    }
     	  

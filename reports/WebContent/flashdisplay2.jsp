@@ -39,7 +39,6 @@
 <script type="text/javascript" src="includes/js/chartjs/Chart.min.js"></script>
  
 <script type="text/javascript" src="includes/js/chartjs/getappdataflash.js"></script>
-<script type="text/javascript" src="includes/js/chartjs/getappdataflashyear.js"></script>
 <style type="text/css">
  
 
@@ -85,7 +84,39 @@ $(function() {
 			
     </script>
     
+   <script>
+  function openWin(myID) {
   
+  
+   myID2 = document.getElementById(b_app).value;
+
+  alert("ID" + myID2);
+  //window.open("http://cvyhj3a27:8181/fisAssetServlet/readxml?appID=" + myID2);
+	}
+	
+	
+	var call = function(id){
+		var myID = document.getElementById(id).value;
+		//alert("****** myID=" + myID + " ID=" + id);
+		//window.open("http://cvyhj3a27:8181/fisAssetServlet/readxml?appID=
+		window.open("http://localhost:8181/webreport/getquote?appKey=" + myID);
+				
+				
+	}
+
+
+
+	var getExcel = function(urlValue){
+		var formUrl = document.getElementById(urlValue).value;
+		//alert("SD=" + startDate + "****** formUrl=" + formUrl + " \n***** urlValue=" + urlValue);
+		//alert("in Quote" + myID + " --- id=" +id);
+		window.open( formUrl, 'popUpWindow','height=500,width=800,left=100,top=100,resizable=yes,scrollbars=yes,toolbar=yes,menubar=no,location=no,directories=no, status=yes' );
+	
+	}
+	
+	
+	
+</script> 
 </head>
 <!-- ********************************************************************************************************************************************************* -->
 
@@ -99,7 +130,92 @@ $(function() {
 <%!/*****************************************************************************************************************************************************************/
 //String formUrl = null;
 /*************************************************************************************************************************************************************/
-%>
+public ArrayList<String> readHeader(String filePath) throws IOException {
+	
+	ArrayList<String> strArr = new ArrayList<String>();
+	String header = null;
+	BufferedReader reader = null;
+	StringBuilder sb = null;
+	String line = null;
+	try {
+	 	reader = new BufferedReader(new FileReader(filePath));
+    	 sb = new StringBuilder();
+    
+	} catch (FileNotFoundException fex) {
+		fex.printStackTrace();	
+	}
+	try { 
+	    while((line = reader.readLine())!= null){
+	    	strArr.add(line);
+	    }	   
+		reader.close();
+	
+	} catch (IOException ioe) {
+		ioe.printStackTrace();
+	}
+	
+	return strArr;	
+}
+/*************************************************************************************************************************************************************/
+public String  buildHeader( JspWriter out2, ArrayList<String> dataArr   ) throws IOException {
+	
+	String header = "";
+	String style = "b3";
+	if (dataArr.size() > 0) {
+		for (int k = 0; k < dataArr.size(); k++) {
+			
+			if (k == 1) {
+				style = "b3a";
+			} else {
+				style = "b3";
+			}
+			 header += "<th class=\"b3\" >" + dataArr.get(k) + " </th>";
+			 
+			
+		}
+	}
+	return header;
+	
+}
+/*************************************************************************************************************************************************************/
+
+/*************************************************************************************************************************************************************/
+public String  buildCells(JspWriter out, ArrayList<String> dataArr  ) throws IOException {
+	String cells = "";
+	String xDataItem = null;
+	String color1 = "plum";
+	String style1 = "font-family: sans-serif; color: white;";
+	String rowEven = "#D7DBDD";
+	String rowOdd = "#AEB6BF";
+	String excel = null;
+	String rowColor = null;
+	
+
+		if (dataArr.size() > 0) {
+			for (int k = 0; k < dataArr.size(); k++) {
+
+				rowColor = (k % 2 == 0) ? rowEven : rowOdd;
+				//cells += "<tr class=\"alt-row\" bgcolor=" + rowColor + ">";
+				cells = "<tr  bgcolor=" + rowColor + " >";
+				out.println(cells);
+				cells = "";
+				xDataItem = dataArr.get(k);
+				String token_list[] = xDataItem.split(";");
+				for (int x = 0; x < token_list.length; x++) {
+					//cells += "<td class=\"b3\">" + token_list[x] + "</td>";
+					cells += "<td class=\"b3\" >" + token_list[x] + "</td>";
+					
+					
+					
+				}
+				cells += "</tr >";
+				out.println(cells);
+				cells = "";
+			}
+		}
+
+		return cells;
+	}%>
 
 
 
@@ -107,17 +223,25 @@ $(function() {
  
 <%  
 /*****************************************************************************************************************************************************************/
+
+
+
+ 
+	
+	//out.println("listSize=" + list.size());
+	//if (list.size() > 0) {
 		
-%>
+		%>
 	
    
    
    
-<div style="height: 450px; overflow: auto;">
+			<div style="height: 450px; overflow: auto;">
 				
-<table border="2">
+	 	<table border="2">
   <tr>
-    <th class="b" >Flash M-Q Data Totals</th>  
+    <th class="b" >Flash M-Q-Y Data Totals</th>
+    
   </tr>
   <tr>
     <td>
@@ -126,23 +250,8 @@ $(function() {
 		</div>
     
     </td>
-   </tr> 
-   <tr> 
-   <tr>
-    <th class="b" >Flash Yearly Data Totals</th>  
+ 
   </tr>
-   
- <td>
-   		<div id="chart-containerFlashYear">
-	 		<canvas id="mycanvasFlashYear" ></canvas>	
-		</div>
-    
-    </td>
-
-  </tr>
-  
-  
-  
 </table>
   
 <BR>
