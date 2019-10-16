@@ -172,6 +172,6 @@ to refresh the menus.
 
 
  </form>
-<h5>If you require access to the reports, please contact: Jason.Gehrke@olympus.com</h5>
+<h5>If you require access to the reports, please contact: John.Freeh@olympus.com</h5>
 </body>
 </html>
