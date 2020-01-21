@@ -41,12 +41,14 @@ public class VaPoExpired  extends HttpServlet {
 	static private PreparedStatement statement;
 	static String propFile = "C:\\Java_Dev\\props\\unidata.prop";
 	static String sqlFile = "C:\\Java_Dev\\props\\sql\\vapoexpired.sql";
+	static String sqlFileAll = "C:\\Java_Dev\\props\\sql\\vapoexpiredall.sql";
 	String VaPoExpiredHdr = "C:\\Java_Dev\\props\\headers\\vapoexpiredhdr.txt";
 	String logFileName = "vapoexpired.log";
 	String directoryName = "D:/Kettle/logfiles/vapoexpired";
 
 	/****************************************************************************************************************************************************/
 	public static ArrayList<String> getDbData(String brch) throws IOException {
+		boolean args = false;
 		FileInputStream fis = null;
 		FileReader fr = null;
 		String s = new String();
@@ -59,8 +61,16 @@ public class VaPoExpired  extends HttpServlet {
 		}
 		Properties connectionProps = new Properties();
 		connectionProps.load(fis);
+		
+		if (Olyutil.isNullStr(brch)) {
+			fr = new FileReader(new File(sqlFileAll));
+			
+		} else {
+			fr = new FileReader(new File(sqlFile));
+			args = true;
+		}
 
-		fr = new FileReader(new File(sqlFile));
+		 
 
 		// be sure to not have line starting with "--" or "/*" or any other non
 		// alphabetical character
@@ -81,7 +91,9 @@ public class VaPoExpired  extends HttpServlet {
 				statement = con.prepareStatement(query);
 
 				// System.out.println("***^^^*** contractID=" + contractID);
-				statement.setString(1, brch);
+				if (args == true) {
+					statement.setString(1, brch);
+				}
 				res = Olyutil.getResultSetPS(statement);
 				strArr = Olyutil.resultSetArray(res, ";");
 			}
@@ -113,7 +125,7 @@ public class VaPoExpired  extends HttpServlet {
 			// Begin setup logging
 			Date logDate = null;
 			String dateFmt = "";
-			String dispatchJSP = "/vapoexpireddetail.jsp";
+			String dispatchJSP = "/vapoexpireddetail2.jsp";
 			String sep = ";";
 			Handler fileHandler =  OlyLog.setAppendLog(directoryName, logFileName, logger );
 			logDate = Olyutil.getCurrentDate();

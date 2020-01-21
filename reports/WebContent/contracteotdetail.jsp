@@ -177,7 +177,7 @@ public String  buildCells(JspWriter out, ArrayList<String> dataArr  ) throws IOE
 				String token_list[] = xDataItem.split(";");
 				for (int x = 0; x < token_list.length; x++) {
 					//cells += "<td class=\"b3\">" + token_list[x] + "</td>";
-					cells += "<td class=\"b3\" >" + token_list[x] + "</td>";
+					cells += "<td class=\"b3\" >" + token_list[x].replaceAll("null", "") + "</td>";
 					
 					
 					

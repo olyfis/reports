@@ -176,7 +176,8 @@ public String  buildCells(JspWriter out, ArrayList<String> dataArr  ) throws IOE
 				cells = "<tr  bgcolor=" + rowColor + " >";
 				out.println(cells);
 				cells = "";
-				xDataItem = dataArr.get(k);
+				xDataItem = dataArr.get(k).replaceAll("null", " ");
+				
 				String token_list[] = xDataItem.split(";");
 				for (int x = 0; x < token_list.length; x++) {
 					//cells += "<td class=\"b3\">" + token_list[x] + "</td>";

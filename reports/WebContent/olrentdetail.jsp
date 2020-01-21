@@ -183,10 +183,18 @@ public String  buildCells(JspWriter out, ArrayList<String> dataArr  ) throws IOE
 				out.println(cells);
 				cells = "";
 				xDataItem = dataArr.get(k);
+			
 				String token_list[] = xDataItem.split(";");
 				for (int x = 0; x < token_list.length; x++) {
 					//cells += "<td class=\"b3\">" + token_list[x] + "</td>";
-					cells += "<td class=\"b3\" >" + token_list[x] + "</td>";
+					if ( x == 9) {
+						String modSN = token_list[7].replaceAll("null", "") + token_list[8].replaceAll("null", "");
+						cells += "<td class=\"b3\" >" + modSN + "</td>";
+
+					} else {
+						cells += "<td class=\"b3\" >" + token_list[x].replaceAll("null", "") + "</td>";
+
+					}
 					
 					
 					

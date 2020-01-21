@@ -3,8 +3,10 @@ package com.olympus.reports.leases;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.logging.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -24,7 +26,7 @@ import com.olympus.olyutil.excel.OlyExcel;
 
 @WebServlet("/olrentexcel")
 public class OlRentExcel  extends HttpServlet {
-
+	private final Logger logger = Logger.getLogger(OlRentExcel.class.getName()); // define logger
 	public static ArrayList<String> updateArray( ArrayList<String> sArr) throws IOException {
 		ArrayList<String> modArr = new ArrayList<String>();
 		String cval = "";
@@ -60,9 +62,38 @@ public class OlRentExcel  extends HttpServlet {
 		}
 		return(modArr);
 	}
-	
 	/***********************************************************************************************************************************/
-	public static void loadWorkSheetCell(XSSFWorkbook workbook, XSSFSheet sheet, ArrayList<String> strArr, int rowNum, String sep) {
+
+	public static String formatDate(String dateVal ) throws IOException {
+		
+		 
+		String dateMyFormat = "";
+ 
+		//SimpleDateFormat fromUser = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS"); 
+        //SimpleDateFormat myFormat = new SimpleDateFormat("yyyy-MM-dd");
+        
+		SimpleDateFormat fromUser = new SimpleDateFormat("yyyy-MM-dd"); 
+        SimpleDateFormat myFormat = new SimpleDateFormat("MM/dd/yyyy");
+        
+
+        try {
+            Date dateFromUser = fromUser.parse(dateVal); // Parse it to the exisitng date pattern and return Date type
+            dateMyFormat = myFormat.format(dateFromUser); // format it to the date pattern you prefer
+            //System.out.println("DF=" + dateMyFormat); // outputs : 2009-05-19
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+		
+		
+		
+		return(dateMyFormat);
+ 
+	 
+	}
+	/**
+	 * @throws IOException *********************************************************************************************************************************/
+	public static void loadWorkSheetCell(XSSFWorkbook workbook, XSSFSheet sheet, ArrayList<String> strArr, int rowNum, String sep) throws IOException {
 		String[] strSplitArr = null;
 		long assetID = 0;
 		double raM = 0.0;
@@ -78,8 +109,20 @@ public class OlRentExcel  extends HttpServlet {
 			strSplitArr = Olyutil.splitStr(str, sep);	
 			int colNum = 0;
 			for (String token : strSplitArr) {
+				 raM = 0.0;
+				 raC = 0.0;
+				 raY = 0.0;
 				Cell cell = row.createCell(colNum);
-				if (colNum == 5) {
+				if (colNum == 4) {
+					String nDate = formatDate(token);
+					
+					
+					//String nDate = token.replaceAll("-","\\/");		
+					//System.out.println("** T4=" + nDate);
+					if (token instanceof String) {
+						cell.setCellValue((String) nDate);
+					}			
+				} else if (colNum == 5) {
 					if (! Olyutil.isNullStr(strSplitArr[5])) {
 						assetID = Long.valueOf(strSplitArr[5]);
 					}			
@@ -99,9 +142,14 @@ public class OlRentExcel  extends HttpServlet {
 						raY = Double.valueOf(strSplitArr[13]);
 					}					
 					cell.setCellValue((double) raY);
+				}  else if (colNum == 9) {
+				
+					String modSN = strSplitArr[7].replaceAll("null", "") + strSplitArr[8].replaceAll("null", "");
+					cell.setCellValue((String)  modSN );
+				
 				} else {			
 					if (token instanceof String) {
-						cell.setCellValue((String) token);
+						cell.setCellValue((String) token.replaceAll("null", ""));
 					}
 				}
 				colNum++;
@@ -114,6 +162,8 @@ public class OlRentExcel  extends HttpServlet {
 	// Service method
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+		Date logDate = null;
+		String dateFmt = "";
 		String headerFilenameBRSummary = "C:\\Java_Dev\\props\\headers\\olRent.txt";
 		ArrayList<String> modArr = new ArrayList<String>();
 		XSSFWorkbook workbook = null;
@@ -127,27 +177,38 @@ public class OlRentExcel  extends HttpServlet {
 		HttpSession session = req.getSession();
 		ArrayList<String> strArr = new ArrayList<String>();
 		strArr = (ArrayList<String>) session.getAttribute("strArr");
-		modArr = updateArray(strArr);
+		//modArr = updateArray(strArr);
 		//Olyutil.printStrArray(strArr);
 		/*****************************************************************************************************************************************/
 		// Create Excel file on client
-		
+		 
+		dateFmt = Olyutil.formatDate("yyyy-MM-dd hh:mm:ss.SSS");
+		logger.info(dateFmt + ": " + "------------------Begin loadWorksheet");
 	 
 		//WriteExcel writeExcel = new WriteExcel();
 		workbook = OlyExcel.newWorkbook();
 		sheet = OlyExcel.newWorkSheet(workbook, "OL_Lease_Rents_Accrued Report");
 		OlyExcel.loadHeader(workbook, sheet, headerArr);
-		//System.out.println("** Call loadWorkSheet");
-		loadWorkSheetCell(workbook, sheet, modArr, 1, ";");
+			System.out.println("** Call loadWorkSheet -- " + "Date=" + dateStamp);
+		loadWorkSheetCell(workbook, sheet, strArr, 1, ";");
+		dateFmt = Olyutil.formatDate("yyyy-MM-dd hh:mm:ss.SSS");
+		logger.info(dateFmt + ": " + "------------------End loadWorksheet");
+		
 		//BufferedInputStream in = null; 
 		try {
 			// HttpServletResponse response = getResponse(); // get ServletResponse
 			res.setContentType("application/vnd.ms-excel"); // Set up mime type
 			res.addHeader("Content-Disposition", "attachment; filename=" + FILE_NAME);
+			dateFmt = Olyutil.formatDate("yyyy-MM-dd hh:mm:ss.SSS");
+			logger.info(dateFmt + ": " + "------------------Begin writeOutput");
 			OutputStream out2 = res.getOutputStream();
 			workbook.write(out2);
+			dateFmt = Olyutil.formatDate("yyyy-MM-dd hh:mm:ss.SSS");
+			logger.info(dateFmt + ": " + "------------------End writeOutput -- Begin Flush");
 			out2.flush();
-
+			
+			dateFmt = Olyutil.formatDate("yyyy-MM-dd hh:mm:ss.SSS");
+			logger.info(dateFmt + ": " + "------------------End Flush");
 		//********************************************************************************************************************************
 		
 		} catch (FileNotFoundException e) {

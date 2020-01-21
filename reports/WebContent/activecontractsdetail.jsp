@@ -4,18 +4,16 @@
 <%@ page import="java.util.*"%>
 <%@ page import="javax.servlet.*"%>
 <% 
-  	String title =  "FIS Flash M-Q-Y Chart Report Page"; 
+  	String title =  "FIS Active Contracts Report Page"; 
 	ArrayList<String> list = new ArrayList<String>();
-	/*
 	ArrayList<String> tokens = new ArrayList<String>();
 	String formUrl =  (String) session.getAttribute("formUrl");
 	
-	String filePath = "C:\\Java_Dev\\props\\headers\\olRent.txt";
+	String filePath = "C:\\Java_Dev\\props\\headers\\activeContractsHdr.txt";
 	 ArrayList<String> headerArr = readHeader(filePath);
  
  
 	list = (ArrayList<String>) session.getAttribute("strArr");
-	*/
 %>
 
 <!DOCTYPE html>
@@ -31,24 +29,18 @@
  
     <link rel="stylesheet" href="includes/css/calendar.css" /> 
 <style><%@include file="includes/css/table.css"%></style>
-<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.9.1/jquery.tablesorter.min.js"></script>
-<script type="text/javascript" src="includes/js/tableFilter.js"></script>
-<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-<script type="text/javascript" src="includes/js/chartjs/Chart.js"></script>
-<script type="text/javascript" src="includes/js/chartjs/Chart.min.js"></script>
- 
-<script type="text/javascript" src="includes/js/chartjs/getappdataflash.js"></script>
-<style type="text/css">
+
+
+<!-- 
+
+<style><%@include file="includes/css/table.css"%></style>
+
  
 
-#chart-containerFlash {
-		width: 800px;
-		height: auto;
-	}
- 
-</style>
- 
+ -->
+
+
+
 <!-- ******************************************************************************************************************************************************** -->
 <style>
 
@@ -194,7 +186,7 @@ public String  buildCells(JspWriter out, ArrayList<String> dataArr  ) throws IOE
 				String token_list[] = xDataItem.split(";");
 				for (int x = 0; x < token_list.length; x++) {
 					//cells += "<td class=\"b3\">" + token_list[x] + "</td>";
-					cells += "<td class=\"b3\" >" + token_list[x] + "</td>";
+					cells += "<td class=\"b3\" >" + token_list[x].replaceAll("null", " ") + "</td>";
 					
 					
 					
@@ -220,7 +212,7 @@ public String  buildCells(JspWriter out, ArrayList<String> dataArr  ) throws IOE
  
 	
 	//out.println("listSize=" + list.size());
-	//if (list.size() > 0) {
+	if (list.size() > 0) {
 		
 		%>
 	
@@ -229,24 +221,43 @@ public String  buildCells(JspWriter out, ArrayList<String> dataArr  ) throws IOE
    
 			<div style="height: 450px; overflow: auto;">
 				
-	 	<table border="2">
-  <tr>
-    <th class="b" >Flash M-Q-Y Data Totals</th>
-    
-  </tr>
-  <tr>
-    <td>
-   		<div id="chart-containerFlash">
-	 		<canvas id="mycanvasFlash" ></canvas>	
-		</div>
-    
-    </td>
+		
+	
+		<table class="nb" border="0" cellpadding="1" cellspacing="1">
+  <tr class="nb">
+    <td  class="nb" >   
+    <form name="excelForm" enctype="multipart/form-data" method="get" action="<%=formUrl%> " \>
+    <input type="hidden" value="excel"  name="excel" />
+    <input type="submit" value="Save Excel File" class="btn" /> 
+    </form>
+	</td>   
+   </tr></table><BR>
+
  
-  </tr>
-</table>
-  
-<BR>
- 	
+   
+<!--  
+<input id="search" type="text" placeholder="Enter Text to Filter...">
+	 -->			
+		
+
+		<%  
+		/**********************************************************************************************************************************************************/
+		// Output Table 
+	
+	 
+		out.println("<table  border=\"1\"> <thead> <tr>");
+		String header = buildHeader(out, headerArr); // build header from file
+		out.println(header);
+		out.println("</tr></thead>");
+		out.println("<tbody id=\"report\">");
+		String cells =  buildCells(out, list); // build data cells from file
+		out.println(cells);
+		out.println("</tbody></table>"); // Close Table
+	
+ 
+		
+	}
+%>	
 </div>
 		
 

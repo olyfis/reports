@@ -1,10 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+    <% 
+  	String title =  "Olympus FIS Daily Commencement Report"; 
+%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-<title>Olympus FIS Web Report Menu</title>
+<title><%=title%></title>
 <!--  <link href="includes/appstyle.css" rel="stylesheet" type="text/css" /> 
 
 <style><%@include file="includes/css/reports.css"%></style>
@@ -53,9 +56,12 @@ function ajaxFunction(){
 
 //	var atype = document.actionform.getElementById('actiontype').value;
 	var atype = document.actionform.actiontype.value;
+	var date2 = document.actionform.startDate.value;
 	//alert("atype=" + atype);
-	//var queryString = "?atype=" + atype + "&wpm=" + wpm + "&sex=" + sex;
-	var queryString = "/evergreen/ajax.jsp?atype=" + atype;
+	
+	//alert("date2=" + date2);
+	//var queryString = "?atype=" + atype + "&wpm=" + wpm + "&ex=" + ex;
+	var queryString = "/webreport/ajaxIL2.jsp?atype=" + atype + "&date2=" + date2;
 	
 
 	  
@@ -80,80 +86,42 @@ function ajaxFunction(){
     
  <%@include  file="includes/header.html" %>
 
-
-<%-- Req for Salesforce Ajax menu 
-<jsp:include page="/sfquery" flush="true" /> --%>
-<c:out value="${strArrID}"></c:out>
- 
-  <c:forEach items="${strArrID}" var="id">
-            ${id.id} <br />
-        </c:forEach>
-        
+      
 <!--   <img src="includes\images\logo.jpg" alt="logo"  height="100" width="225" align="right"> -->
 
 
 <div style="padding-left:20px">
-  <h3>FIS Report Landing Page</h3>
+  <h3><%=title%></h3>
 </div>
 
 <BR>
 
-<h5>This page will provide access to useful FIS reports and data.<br>
-Please select an action from the menu and provide the required
-parameters if necessary.</h5>
+<h5>This page will provide an on-demand Daily Commencement Report.</h5> <BR> 
+<BR> <font color="red"> Note: Some queries take more time to run. Please be patient.</font><BR> 
 
 
-
-<h5>Note: <font color="red">Requires Javascript to be enabled.</font> <BR>
-The dropdown menus are dynamically loaded. You may need to reload 
-to refresh the menus.
-</h5>
+ 
 
 <BR>
 
-
-	<form name="actionform" method="post" action="results.jsp">
+<!--  action = servlet to call: http://localhost:8181/webreport/commencement?id=2019-08-31   -->
+	<form name="actionform" method="get" action="dailycommencement">
 
 <table class="a" width="40%"  border="1" cellpadding="1" cellspacing="1">
-  <tr> <th class="theader"> Olympus FIS Web Reports</th> </tr>
+  <tr> <th class="theader"> <%=title%></th> </tr>
   <tr>
     <td class="table_cell">
     <!--  Inner Table -->
     <table class="a" width="100%"  border="1" cellpadding="1" cellspacing="1">
   <tr>
-        <td width="40" valign="bottom">
-        <b>Action:</b> 
-        <select name="actiontype" onchange='ajaxFunction()' >
-          <option value="0">Select Action</option>
-          
-          <option value="100">FIS Contract Validation</option>
-          <option value="125">FIS Contract Error Report</option>
-           <option value="135">FIS Asset Validation</option>
-           <option value="140">FIS Rapport Sync Error Check</option>
-		  <option value="99">FIS Live Penetration Reports</option>
-           <option value="5">FIS Flash Report</option>
-            <option value="115">FIS Contract EOT Report</option>
-            <option value="145">FIS Lease Rents Accrued Report</option>
-           <option value="9">FIS Live Transaction Dashboard (No Filters)</option>
-            <option value="30">Rapport Booking Report</option>"
-           <option value="75">Rapport Booking Summary Report</option>"
-            <option value="25">Infolease Booking Report</option>"
-           
-          <option value="10">EverGreen Report</option>
-        <!--    <option value="35">Asset by Contract ID Report</option>
-          
-          <option value="15">NBVA Report</option>" -->
-           <!--  <option value="45">Salesforce GetToken</option>" --> 
-         <!--     <option value="40">Salesforce Leads</option>" 
-         <option value="50">Salesforce Leads --Test</option>" -->
+  
+ 
+        <td width="40" valign="bottom"> <b>Select Date:</b> 
+      <%  out.println("<input name=\"id\" id=\"date2\" type=\"text\" value=\"Click for Calendar\" onclick=\"pureJSCalendar.open('yyyy-MM-dd', 20, 30, 7, '2017-1-1', '2025-12-31', 'date2', 20)\"   />" );
+  
+     %> 
+  
         
-         <option value="60">Last Ship Date Report</option>
-         <option value="70">CCAN Info Report</option>
-        <option value="80">Snapshot Report</option>
-         <option value="85">Utilization Report</option>
-          <option value="90">Maturity Asset Report</option>
-          <option value="95">Maturity All Assets Report</option>
-        </select>
 	</td>
 
     <td  valign="bottom" class="c">
@@ -172,6 +140,6 @@ to refresh the menus.
 
 
  </form>
-<h5>If you require access to the reports, please contact: John.Freeh@olympus.com</h5>
+<h5>If you require access to the reports, please contact: Michael.Janenko@olympus.com</h5>
 </body>
 </html>

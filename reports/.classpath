@@ -9,7 +9,6 @@
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.web.container"/>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
 	<classpathentry kind="lib" path="C:/Java_Dev/lib/project_jars_BuildPath/asjava.jar"/>
-	<classpathentry kind="lib" path="C:/Java_Dev/lib/project_jars_BuildPath/commons-lang3-3.1.jar"/>
 	<classpathentry kind="lib" path="C:/Java_Dev/lib/project_jars_BuildPath/httpclient-4.5.6.jar"/>
 	<classpathentry kind="lib" path="C:/Java_Dev/lib/project_jars_BuildPath/httpcore-4.4.10.jar"/>
 	<classpathentry kind="lib" path="C:/Java_Dev/lib/project_jars_BuildPath/javax.servlet.jsp-2.2.0.v201112011158.jar"/>
@@ -26,5 +25,9 @@
 	<classpathentry kind="lib" path="C:/Java_Dev/lib/project_jars_BuildPath/Poi_New/poi-ooxml-schemas-4.0.1.jar"/>
 	<classpathentry kind="lib" path="C:/Java_Dev/lib/project_jars_BuildPath/Poi_New/xmlbeans-3.0.2.jar"/>
 	<classpathentry kind="lib" path="C:/Java_Dev/lib/project_jars_BuildPath/olyutil.jar"/>
+	<classpathentry kind="lib" path="C:/Java_Dev/lib/project_jars_BuildPath/excelPoi-1.0.0.jar"/>
+	<classpathentry kind="lib" path="C:/Java_Dev/lib/project_jars_BuildPath/opencsv-3.9.jar"/>
+	<classpathentry kind="lib" path="C:/Java_Dev/lib/project_jars_BuildPath/log4j-1.2.17.jar"/>
+	<classpathentry kind="lib" path="C:/Java_Dev/lib/project_jars_BuildPath/commons-lang-2.6.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>

@@ -1,5 +1,5 @@
-package com.olympus.reports.leases;
-// Run: http://localhost:8181/reports/contracteot?month=November&year=2019
+package com.olympus.reports.orderreleased;
+
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -24,8 +24,8 @@ import com.olympus.olyutil.Olyutil;
 import com.olympus.olyutil.excel.OlyExcel;
 
 
-@WebServlet("/ceotexcel")
-public class CeotExcel  extends HttpServlet {
+@WebServlet("/orexcel")
+public class OrderReleasedExcel  extends HttpServlet {
  
 
 /***********************************************************************************************************************************/
@@ -81,61 +81,13 @@ public class CeotExcel  extends HttpServlet {
 			int colNum = 0;
 			for (String token : strSplitArr) {
 				Cell cell = row.createCell(colNum);
-				if (colNum == 8) {
-					if (! Olyutil.isNullStr(token)) {
-						assetID = Long.valueOf(token);
-						cell.setCellValue((long) assetID);
-					}	else {
-						cell.setCellValue("");
-					}				
-					 
-				} else if (colNum == 6) {
+				 if (colNum == 3 || colNum == 53) {
 					String nDate = formatDate(token);
 					//System.out.println("Col=" + colNum + " -- DF=" + nDate);
 					if (token instanceof String) {
 						cell.setCellValue((String) nDate);
 					}	
-				
-				
-				} else if (colNum == 10) {
-					if ( Olyutil.isNullStr(token) || token.equals("null") ) {						
-						sn = "";
-					} else {
-						sn =  token;
-					}
-					cell.setCellValue((String) sn);
-				} else if (colNum == 11) {
-					if (! Olyutil.isNullStr(token)) {
-						equipCost = Double.valueOf(token.replaceAll(",", ""));
-						cell.setCellValue((double) equipCost);
-					}	else {
-						cell.setCellValue("");
-					}				 
-					
-				} else if (colNum == 12) {
-					//System.out.println("**L=" + j + " -- T=" + token);
-					if (! Olyutil.isNullStr(token)) {
-						assetRes = Double.valueOf(token.replaceAll(",", ""));
-						cell.setCellValue((double) assetRes);
-					}  	else {
-						cell.setCellValue("");
-					}
-					
-				} else if (colNum == 13) {
-					if (! Olyutil.isNullStr(token)) {
-						accountRes = Double.valueOf(token.replaceAll(",", ""));
-						cell.setCellValue((double) accountRes);
-					} else {
-						cell.setCellValue("");
-					}					
-					
-				} else if (colNum == 17) {
-					if (! Olyutil.isNullStr(token)) {
-						cogs = Double.valueOf(token.replaceAll(",", ""));
-						cell.setCellValue((double) cogs);
-					} else {
-						cell.setCellValue("");
-					}						
+										
 					
 				} else {			
 					if (token instanceof String) {
@@ -150,80 +102,13 @@ public class CeotExcel  extends HttpServlet {
 	}
 	
 	/***********************************************************************************************************************************/
-	public static void OLDloadWorkSheetCell(XSSFWorkbook workbook, XSSFSheet sheet, ArrayList<String> strArr, int rowNum, String sep) throws IOException {
-		String[] strSplitArr = null;
-		long assetID = 0;
-		double equipCost = 0.0;
-		double assetRes = 0.0;
-		double accountRes = 0.0;
-		double cogs = 0.0;
-		String sn = "";
-	 
-		//System.out.println("************* strArr=" + strArr.toString());
-		for (String str : strArr) { // iterating ArrayList
-				
-			Row row = sheet.createRow(rowNum++);
-			strSplitArr = Olyutil.splitStr(str, sep);	
-			int colNum = 0;
-			for (String token : strSplitArr) {
-				Cell cell = row.createCell(colNum);
-				if (colNum == 8) {
-					if (! Olyutil.isNullStr(strSplitArr[8])) {
-						assetID = Long.valueOf(strSplitArr[8]);
-					}			
-					cell.setCellValue((long) assetID);
-				} else if (colNum == 6) {
-					String nDate = formatDate(token);
-					//System.out.println("Col=" + colNum + " -- DF=" + nDate);
-					if (token instanceof String) {
-						cell.setCellValue((String) nDate);
-					}	
-				
-				
-				} else if (colNum == 10) {
-					if ( Olyutil.isNullStr(strSplitArr[10]) || strSplitArr[10].equals("null") ) {						
-						sn = "";
-					} else {
-						sn =  strSplitArr[10];
-					}
-					cell.setCellValue((String) sn);
-				} else if (colNum == 11) {
-					if (! Olyutil.isNullStr(strSplitArr[11])) {
-						equipCost = Double.valueOf(strSplitArr[11].replaceAll(",", ""));
-					}				 
-					cell.setCellValue((double) equipCost);
-				} else if (colNum == 12) {
-					if (! Olyutil.isNullStr(strSplitArr[12])) {
-						assetRes = Double.valueOf(strSplitArr[12].replaceAll(",", ""));
-					}  	
-					cell.setCellValue((double) assetRes);
-				} else if (colNum == 13) {
-					if (! Olyutil.isNullStr(strSplitArr[13])) {
-						accountRes = Double.valueOf(strSplitArr[13].replaceAll(",", ""));
-					}					
-					cell.setCellValue((double) accountRes);
-				} else if (colNum == 17) {
-					if (! Olyutil.isNullStr(strSplitArr[17])) {
-						cogs = Double.valueOf(strSplitArr[17].replaceAll(",", ""));
-					}					
-					cell.setCellValue((double) cogs);
-				} else {			
-					if (token instanceof String) {
-						cell.setCellValue((String) token);
-					}
-				}
-				colNum++;
-			 ;
-				
-			}
-		}
-	}
+	
 	/*****************************************************************************************************************************************/
 
 	// Service method
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-		String headerFilenameBRSummary = "C:\\Java_Dev\\props\\headers\\ContractEOT.txt";
+		String headerFilenameBRSummary = "C:\\Java_Dev\\props\\headers\\OrdRelAppHdr.txt";
 		
 		XSSFWorkbook workbook = null;
 		XSSFSheet sheet = null;
@@ -232,10 +117,10 @@ public class CeotExcel  extends HttpServlet {
 		Date date = Olyutil.getCurrentDate();
 		String dateStamp = date.toString();
 		// System.out.println("Date=" + dateStamp);
-		String FILE_NAME = "ContractEOTReport_" + dateStamp + ".xlsx";
+		String FILE_NAME = "OrderReleasedReport_" + dateStamp + ".xlsx";
 		HttpSession session = req.getSession();
 		ArrayList<String> strArr = new ArrayList<String>();
-		strArr = (ArrayList<String>) session.getAttribute("strArr");
+		strArr = (ArrayList<String>) session.getAttribute("strArrMod");
 		
 		//Olyutil.printStrArray(strArr);
 		/*****************************************************************************************************************************************/
@@ -244,7 +129,7 @@ public class CeotExcel  extends HttpServlet {
 	 
 		//WriteExcel writeExcel = new WriteExcel();
 		workbook = OlyExcel.newWorkbook();
-		sheet = OlyExcel.newWorkSheet(workbook, "Contract EOT Report");
+		sheet = OlyExcel.newWorkSheet(workbook, "Order Released Report");
 		OlyExcel.loadHeader(workbook, sheet, headerArr);
 		//System.out.println("** Call loadWorkSheet");
 		loadWorkSheetCell(workbook, sheet, strArr, 1, ";");

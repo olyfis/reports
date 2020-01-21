@@ -113,7 +113,7 @@ $(function() {
    
    
    
-<div style="height: 450px; overflow: auto;">
+<div style="height: 600px; overflow: auto;">
 				
 <table border="2">
   <tr>

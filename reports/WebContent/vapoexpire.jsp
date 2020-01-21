@@ -75,7 +75,7 @@ to refresh the menus.
             <option value="9">HOLLIDAY, DAVID</option>
             <option value="10">STERNBERG, KARLA</option>
            <option value="11">DAVIS, GREG</option>
-            
+             <option value="100">Full Report</option>
         </select>
 	</td>
 

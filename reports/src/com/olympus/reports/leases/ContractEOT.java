@@ -155,7 +155,7 @@ import com.olympus.reports.evergreen.EvergreenExcel;
 			dispatchJSP = "/contracteotdetail.jsp";
 			sep = ";";
 			strArr = getDbData(searchDate);
-			//Olyutil.printStrArray(strArr);
+		//Olyutil.printStrArray(strArr);
 			String formUrl = "formUrl";
 			//String formUrlValue = "/reports/olexcel " ;
 			
@@ -168,7 +168,7 @@ import com.olympus.reports.evergreen.EvergreenExcel;
 			logger.info(dateFmt + ": " + "------------------Begin forward to: " + dispatchJSP);
 			fileHandler.flush();
 			fileHandler.close();
-			request.getRequestDispatcher(dispatchJSP).forward(request, response);
+			//request.getRequestDispatcher(dispatchJSP).forward(request, response);
 			// System.out.println("Exit Servlet " + this.getServletName() + " in doGet() ");
 			
 		}

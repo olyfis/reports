@@ -55,6 +55,9 @@
 		} else if (at.equals("11")) {	 
 			String redirectURL = "http://" + hostname2  + ":8181/reports/poexpire?brch=" + at;
 			response.sendRedirect(redirectURL);
+		} else if (at.equals("100")) {	 
+			String redirectURL = "http://" + hostname2  + ":8181/reports/poexpire?brch=";
+			response.sendRedirect(redirectURL);
 		} 
 		
 		

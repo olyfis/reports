@@ -4,18 +4,17 @@
 <%@ page import="java.util.*"%>
 <%@ page import="javax.servlet.*"%>
 <% 
-  	String title =  "FIS Flash M-Q-Y Chart Report Page"; 
+  	String title =  "FIS VA PO Expired Report Page"; 
 	ArrayList<String> list = new ArrayList<String>();
-	/*
 	ArrayList<String> tokens = new ArrayList<String>();
 	String formUrl =  (String) session.getAttribute("formUrl");
 	
-	String filePath = "C:\\Java_Dev\\props\\headers\\olRent.txt";
+	String filePath = "C:\\Java_Dev\\props\\headers\\vapoexpiredhdr.txt";
+ 
 	 ArrayList<String> headerArr = readHeader(filePath);
  
  
 	list = (ArrayList<String>) session.getAttribute("strArr");
-	*/
 %>
 
 <!DOCTYPE html>
@@ -28,39 +27,39 @@
 <script type="text/javascript" src="includes/js/tableFilter.js"></script>
 
 <style><%@include file="includes/css/header.css"%></style>
- 
-    <link rel="stylesheet" href="includes/css/calendar.css" /> 
-<style><%@include file="includes/css/table.css"%></style>
-<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.9.1/jquery.tablesorter.min.js"></script>
-<script type="text/javascript" src="includes/js/tableFilter.js"></script>
-<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-<script type="text/javascript" src="includes/js/chartjs/Chart.js"></script>
-<script type="text/javascript" src="includes/js/chartjs/Chart.min.js"></script>
- 
-<script type="text/javascript" src="includes/js/chartjs/getappdataflash.js"></script>
-<style type="text/css">
- 
+ <link rel="stylesheet" href="includes/css/fixedHdr4.css" /> 
+    
 
-#chart-containerFlash {
-		width: 800px;
-		height: auto;
-	}
- 
-</style>
- 
+  <!-- 
+  
+        <link rel="stylesheet" href="includes/css/table3.css" /> 
+  
+  
+  <link rel="stylesheet" href="includes/css/calendar.css" /> 
+    
+   <link rel="stylesheet" href="includes/css/fixedHdr.css" />  
+    <link rel="stylesheet" href="includes/css/fixedHdr.css" /> 
+   
+   -->
+  
+
+
+
+
+
 <!-- ******************************************************************************************************************************************************** -->
 <style>
 
 </style>
 <!-- ******************************************************************************************************************************************************** -->
 <script>
-
+/*
 $(function() {
 
   // call the tablesorter plugin
   $("table").tablesorter({
-    theme: 'blue',
+    //theme: 'blue',
+    theme: 'green',
     // initialize zebra striping of the table
     widgets: ["zebra"],
     // change the default striping class names
@@ -72,7 +71,7 @@ $(function() {
   });
 
 });	
-			
+	*/		
     </script>
     
    <script>
@@ -81,7 +80,7 @@ $(function() {
   
    myID2 = document.getElementById(b_app).value;
 
-  alert("ID" + myID2);
+  //alert("ID" + myID2);
   //window.open("http://cvyhj3a27:8181/fisAssetServlet/readxml?appID=" + myID2);
 	}
 	
@@ -190,7 +189,8 @@ public String  buildCells(JspWriter out, ArrayList<String> dataArr  ) throws IOE
 				cells = "<tr  bgcolor=" + rowColor + " >";
 				out.println(cells);
 				cells = "";
-				xDataItem = dataArr.get(k);
+				xDataItem = dataArr.get(k).replaceAll("null", " ");
+				
 				String token_list[] = xDataItem.split(";");
 				for (int x = 0; x < token_list.length; x++) {
 					//cells += "<td class=\"b3\">" + token_list[x] + "</td>";
@@ -220,36 +220,58 @@ public String  buildCells(JspWriter out, ArrayList<String> dataArr  ) throws IOE
  
 	
 	//out.println("listSize=" + list.size());
-	//if (list.size() > 0) {
+	if (list.size() > 0) {
 		
 		%>
 	
    
    
    
-			<div style="height: 450px; overflow: auto;">
+			<!--  <div style="height: 450px; overflow: auto;"> -->
 				
-	 	<table border="2">
-  <tr>
-    <th class="b" >Flash M-Q-Y Data Totals</th>
-    
-  </tr>
-  <tr>
-    <td>
-   		<div id="chart-containerFlash">
-	 		<canvas id="mycanvasFlash" ></canvas>	
-		</div>
-    
-    </td>
- 
-  </tr>
-</table>
-  
-<BR>
- 	
-</div>
 		
 
+	
+		<table class="nb" border="0" cellpadding="1" cellspacing="1">
+  <tr class="nb">
+    <td  class="nb" >   
+    <form name="excelForm" enctype="multipart/form-data" method="get" action="<%=formUrl%> " \>
+    <input type="hidden" value="excel"  name="excel" />
+    <input type="submit" value="Save Excel File" class="btn" /> 
+    </form>
+	</td>   
+   </tr></table><BR>
+
+ <section class="">
+  <div class="container">
+   
+<!--  
+<input id="search" type="text" placeholder="Enter Text to Filter...">
+	 -->			
+		
+
+		<%  
+		/**********************************************************************************************************************************************************/
+		// Output Table 
+	
+	 
+		out.println("<table class=\"a\"  border=\"1\"> <thead> <tr>");
+		String header = buildHeader(out, headerArr); // build header from file
+		out.println(header);
+		out.println("</tr></thead>");
+		out.println("<tbody id=\"report\">");
+		String cells =  buildCells(out, list); // build data cells from file
+		out.println(cells);
+		out.println("</tbody></table>"); // Close Table
+	
+ 
+		
+	}
+%>	
+ 
+		
+  </div>
+</section>
  
 
 
