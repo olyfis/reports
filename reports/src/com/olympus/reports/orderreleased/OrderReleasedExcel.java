@@ -81,7 +81,7 @@ public class OrderReleasedExcel  extends HttpServlet {
 			int colNum = 0;
 			for (String token : strSplitArr) {
 				Cell cell = row.createCell(colNum);
-				 if (colNum == 3 || colNum == 53) {
+				 if (colNum == 3 || colNum == 14) {
 					String nDate = formatDate(token);
 					//System.out.println("Col=" + colNum + " -- DF=" + nDate);
 					if (token instanceof String) {

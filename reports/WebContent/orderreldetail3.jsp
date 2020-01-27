@@ -182,10 +182,6 @@ public String  buildCells(JspWriter out, ArrayList<String> dataArr  ) throws IOE
 				xDataItem = dataArr.get(k);
 				String token_list[] = xDataItem.split(";");
 				for (int x = 0; x < token_list.length; x++) {
-					//if (x == 14) {	
-					//}
-					
-					
 					//if (x == 3 || x == 53) {
 						//System.out.println("*** Date:" + token_list[x] + "--" + "SZ=" + token_list.length );
 					//}

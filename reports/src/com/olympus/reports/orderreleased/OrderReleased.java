@@ -13,7 +13,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.logging.Handler;
@@ -45,8 +47,66 @@ public class OrderReleased extends HttpServlet {
 		static String propFile = "C:\\Java_Dev\\props\\Rapport.prop";		
 		static String sqlFile = "C:\\Java_Dev\\props\\sql\\orderReleasedApp\\ordersReleased_fixedDate_v4_app.sql";
 		static String sqlFileIL = "C:\\Java_Dev\\props\\sql\\orderReleasedApp\\getcommDate.sql";
+		
 		/****************************************************************************************************************************************************/
 		public static ArrayList<String> addDateToStr( ArrayList<String> strArr, Map<String, String> contractMap ) {
+			
+			
+			 ArrayList<String> strArrMod = new ArrayList<String>();
+		String id = "";
+		String addDate = "";
+		//Olyutil.printHashMap(contractMap);
+		//int i = 0;
+		//String[] arr;
+		
+		
+		for (String str : strArr) {
+			String newStr = new String();
+			String[] items = str.split(";");
+			id = items[0];
+			for (int k = 0; k < items.length; k++) {
+				if (k == 14) {
+					newStr += contractMap.get(id) + ";" + items[k] + ";";
+				} else {
+					newStr += items[k] + ";";
+				}
+			}
+			strArrMod.add(newStr);
+			
+			/*
+			// Coverting array to ArrayList 
+	        List<String> list = new ArrayList<>(Arrays.asList(items)); 
+	        
+	        
+			
+			//addDate = str + ";" +  contractMap.get(id);
+			addDate =  contractMap.get(id);	
+			
+			
+			list.add(14, addDate); 
+			// Converting the list back to array 
+			items = list.toArray(items); 
+	  
+	        // Printing the original array 
+	        System.out.println("Initial Array:\n"
+	                        + Arrays.toString(items)); 
+			
+			strArrMod.add(Arrays.toString(items));
+			*/
+			//addDate = "";
+			// System.out.println("***^^^*** ContactID:" +   id  + "--  Date:" + contractMap.get(id) + "--");
+			//System.out.println("***^^^*** ContactID:" +   id + "--");
+			//System.out.println(strArrMod.get(i));
+			//i++;
+		}
+		return(strArrMod);
+}
+		
+		
+		
+		
+		/****************************************************************************************************************************************************/
+		public static ArrayList<String> addDateToStrOrig( ArrayList<String> strArr, Map<String, String> contractMap ) {
 			
 			 ArrayList<String> strArrMod = new ArrayList<String>();
 		String id = "";
@@ -57,6 +117,9 @@ public class OrderReleased extends HttpServlet {
 			String[] items = str.split(";");
 			id = items[0];
 			addDate = str + ";" +  contractMap.get(id);
+			
+		
+			
 			strArrMod.add(addDate);
 			addDate = "";
 			// System.out.println("***^^^*** ContactID:" +   id  + "--  Date:" + contractMap.get(id) + "--");
