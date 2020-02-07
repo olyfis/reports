@@ -168,7 +168,7 @@ import com.olympus.reports.evergreen.EvergreenExcel;
 			logger.info(dateFmt + ": " + "------------------Begin forward to: " + dispatchJSP);
 			fileHandler.flush();
 			fileHandler.close();
-			//request.getRequestDispatcher(dispatchJSP).forward(request, response);
+			request.getRequestDispatcher(dispatchJSP).forward(request, response);
 			// System.out.println("Exit Servlet " + this.getServletName() + " in doGet() ");
 			
 		}
