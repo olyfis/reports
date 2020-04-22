@@ -90,7 +90,7 @@ public class AssetMasterUpload extends HttpServlet {
 				
 				//statement.setString(1, dateParam);
 				res = Olyutil.getResultSetPS(statement);		 	 
-				strArr = Olyutil.resultSetArray(res, ";");			
+				strArr = Olyutil.resultSetArray(res, "^");			
 			}		
 		} catch (SQLException se) {
 			se.printStackTrace();

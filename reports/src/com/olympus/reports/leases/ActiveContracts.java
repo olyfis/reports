@@ -136,14 +136,14 @@ public class ActiveContracts extends HttpServlet {
 		connProp = "C:\\Java_Dev\\props\\connection.prop";
 	 
 		//dispatchJSP = "/egreendetail.jsp";
-		dispatchJSP = "/contractsdbdetail.jsp";
+		dispatchJSP = "/activecontractsdetail.jsp";
 		sep = ";";
 		strArr = getDbData();
 		//Olyutil.printStrArray(strArr);
 		String formUrl = "formUrl";
 		 
 		
-		String formUrlValue = "/reports/cdbexcel " ;
+		String formUrlValue = "/reports/actexcel " ;
 		request.getSession().setAttribute(formUrl, formUrlValue);
 
 		request.getSession().setAttribute("strArr", strArr);

@@ -300,8 +300,10 @@ import com.opencsv.CSVReader;
 					int colNum = 0;
 					for (String token : strSplitArr) {
 						  cell = row.createCell(colNum);
-						  
-						//System.out.print(token + "--");
+						 if (i == 1) {
+							 System.out.println("Col=" +  colNum + "-- Token="   + token + "--");
+						 }
+					 
 						if (colNum == 15) {		
 							//System.out.println("*** T=" + token + "--");
 							String nTok = token.replaceAll("\\$", "").replaceAll("/", "." ).replaceAll(",", "");

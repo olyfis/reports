@@ -315,7 +315,7 @@ import com.opencsv.CSVReader;
 			Timestamp timestampWb = new Timestamp(System.currentTimeMillis());
 	        //System.out.println("Begin writeFile:" + timestampWb);
 			writeToFile(strArr,outputFileName);
-			//writeToFile2(strArr,outputFileName, ";");
+			//writeToFile2(strArr,outputFileName, "^");
 			Timestamp timestampWe = new Timestamp(System.currentTimeMillis());
 	       // System.out.println("End writeFile:" + timestampWe);
 			
@@ -336,7 +336,7 @@ import com.opencsv.CSVReader;
 			
 			Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 	      //  System.out.println("Begin Load Cells:" + timestamp);
-			loadWorkSheetCells(wbss, sheet, strArr, 1, ";");
+			loadWorkSheetCells(wbss, sheet, strArr, 1, "\\^");
 			Timestamp timestamp2 = new Timestamp(System.currentTimeMillis());
 	      //  System.out.println("End Load Cells:" + timestamp2);
 			

@@ -8,7 +8,7 @@
 	ArrayList<String> list = new ArrayList<String>();
 	ArrayList<String> tokens = new ArrayList<String>();
 	String formUrl =  (String) session.getAttribute("formUrl");
-	String formUrl2 =  (String) session.getAttribute("formUrl2");
+	
 	String filePath = "C:\\Java_Dev\\props\\headers\\dailyComHdr.txt";
 	 ArrayList<String> headerArr = readHeader(filePath);
  
@@ -230,13 +230,6 @@ public String  buildCells(JspWriter out, ArrayList<String> dataArr  ) throws IOE
     <form name="excelForm" enctype="multipart/form-data" method="get" action="<%=formUrl%> " \>
     <input type="hidden" value="excel"  name="excel" />
     <input type="submit" value="Save Excel File" class="btn" /> 
-    </form>
-    
-    <BR>
-    
-    <form name="csvForm" enctype="multipart/form-data" method="get" action="<%=formUrl2%> " \>
-    <input type="hidden" value="csv"  name="csv" />
-    <input type="submit" value="Save csv File" class="btn" /> 
     </form>
 	</td>   
    </tr></table><BR>
