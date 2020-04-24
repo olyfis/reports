@@ -23,15 +23,17 @@ import com.olympus.olyutil.excel.OlyExcel;
 
 @WebServlet("/actexcel")
 public class ActiveContractsExcel  extends HttpServlet  {
-	/********************************************************************************************************************************************************/
-	public static void loadWorkSheetCell(XSSFWorkbook workbook, XSSFSheet sheet, ArrayList<String> strArr, int rowNum, String sep) {
+	/*********************************************************************************************************************************************************/
+	public static void loadWorkSheetCell(XSSFWorkbook workbook, XSSFSheet sheet, ArrayList<String> strArr, int rowNum, String sep) throws IOException {
 		String[] strSplitArr = null;
 		long assetID = 0;
 		double equipCost = 0.0;
 		double gross = 0.0;
 		double yield = 0.0;
+		String dFmt = "";
 	 
 		//System.out.println("************* strArr=" + strArr.toString());
+		int i = 0;
 		for (String str : strArr) { // iterating ArrayList
 		
 			Row row = sheet.createRow(rowNum++);
@@ -39,30 +41,42 @@ public class ActiveContractsExcel  extends HttpServlet  {
 			int colNum = 0;
 			for (String token : strSplitArr) {
 				Cell cell = row.createCell(colNum);
-			  if (colNum == 27) {
-					if (! Olyutil.isNullStr(strSplitArr[27])) {
+				/*if (i == 0) {
+					System.out.println("** Col=" + colNum + "-- Token=" + token);
+				} */
+			
+				if (colNum == 27 ) {				
+					if (!Olyutil.isNullStr(strSplitArr[27])) {
 						gross = Double.valueOf(strSplitArr[27]);
-					}				 
+					}
 					cell.setCellValue((double) gross);
 				} else if (colNum == 28) {
-					if (! Olyutil.isNullStr(strSplitArr[28])) {
+					if (!Olyutil.isNullStr(strSplitArr[28])) {
 						equipCost = Double.valueOf(strSplitArr[28]);
-					}  	
+					}
 					cell.setCellValue((double) equipCost);
 				} else if (colNum == 36) {
-					if (! Olyutil.isNullStr(strSplitArr[36])) {
+					if (!Olyutil.isNullStr(strSplitArr[36])) {
 						yield = Double.valueOf(strSplitArr[36]);
-					}					
+					}
 					cell.setCellValue((double) yield);
-				} else {			
+				} else if (colNum == 4 || colNum == 17 || colNum == 22 || colNum == 29) {
+					if (!Olyutil.isNullStr(strSplitArr[colNum])) {
+						  dFmt = Olyutil.formatDate(token, "yyyy-MM-dd", "MM-dd-yyyy");	
+					}	
+					cell.setCellValue(dFmt);
+				
+				
+				
+				} else {
 					if (token instanceof String) {
 						cell.setCellValue((String) token.replaceAll("null", " "));
 					}
 				}
 				colNum++;
-			 ;
-				
+
 			}
+			i++;
 		}
 	}
 	
