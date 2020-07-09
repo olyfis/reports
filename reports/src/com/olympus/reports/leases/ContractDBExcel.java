@@ -224,10 +224,11 @@ import com.opencsv.CSVReader;
 				long assetID = 0;
 				double equipCost = 0.0;
 				CellStyle style = wbss.createCellStyle();
+				CreationHelper createHelper = wbss.getCreationHelper();
 				Cell cell = null;
 				int i = 0;
 				Timestamp timestampS = new Timestamp(System.currentTimeMillis());
-		        System.out.println("Begin write tokens:" + timestampS);
+		        //System.out.println("Begin write tokens:" + timestampS);
 				for (String str : strArr) { // iterating ArrayList
 					//System.out.println("*** (" + i++ + ") -- loadWorkSheetCells(): " + str);
 					Row row = sheet.createRow(rowNum++);
@@ -253,10 +254,15 @@ import com.opencsv.CSVReader;
 						} else if (colNum == 6 || colNum == 19 || colNum == 29 || colNum == 30 || colNum == 33 ) { 
 							String nDate = formatDate(token);
 							//System.out.println("Col=" + colNum + " -- DF=" + nDate);
+							//style.setDataFormat(createHelper.createDataFormat().getFormat("MM/dd/yyyy"));
+							style.setDataFormat(createHelper.createDataFormat().getFormat("yyyy-MM-dd"));
+							cell.setCellValue(token);
+							cell.setCellStyle(style);
+							/*
 							if (token instanceof String) {
 								cell.setCellValue((String) nDate);
 							}			
-						
+						*/
 						} else {
 							if (token instanceof String) {
 								if ( token.equals("null") || Olyutil.isNullStr(token)) {
@@ -282,6 +288,8 @@ import com.opencsv.CSVReader;
 				//SXSSFSheet sheet = null;
 		       // CSVReader reader = null;
 		        //'Workbook workBook = null;
+				CellStyle style = wbss.createCellStyle();
+				CreationHelper createHelper = wbss.getCreationHelper();
 		        String generatedXlsFilePath = "";
 		        String[] strSplitArr = null;
 		        Cell cell = null;
@@ -315,10 +323,15 @@ import com.opencsv.CSVReader;
 						} else if (colNum == 6 || colNum == 19 || colNum == 29 || colNum == 30 || colNum == 33 ) { 
 							String nDate = formatDate(token);
 							//System.out.println("Col=" + colNum + " -- DF=" + nDate);
+							//style.setDataFormat(createHelper.createDataFormat().getFormat("MM/dd/yyyy"));
+							style.setDataFormat(createHelper.createDataFormat().getFormat("MM/dd/yyyy"));
+							cell.setCellValue(nDate);
+							cell.setCellStyle(style);
+							/*
 							if (token instanceof String) {
 								cell.setCellValue((String) nDate);
-							}	
-						
+							}			
+						*/
 						
 						
 						} else {
@@ -359,11 +372,11 @@ import com.opencsv.CSVReader;
 				/*****************************************************************************************************************************************/
 				// write to file
 				Timestamp timestampWb = new Timestamp(System.currentTimeMillis());
-		        System.out.println("Begin writeFile:" + timestampWb);
+		        //System.out.println("Begin writeFile:" + timestampWb);
 				writeToFile(strArr,outputFileName);
 				//writeToFile2(strArr,outputFileName, ";");
 				Timestamp timestampWe = new Timestamp(System.currentTimeMillis());
-		        System.out.println("End writeFile:" + timestampWe);
+		        //System.out.println("End writeFile:" + timestampWe);
 				
 				// Create Excel file on client
 				//XSSFWorkbook wb = null;
@@ -376,15 +389,15 @@ import com.opencsv.CSVReader;
 				//loadHeader(wbss, sheet, headerArr, styles);
 				loadHeader(wbss, sheet, headerArr);
 				int rowNum = sheet.getLastRowNum() + 1;
-				System.out.println("Row:" + rowNum);
+				//System.out.println("Row:" + rowNum);
 				Row row = sheet.createRow(rowNum); // start at 6
 				Cell cell = row.createCell(0);
 				
 				Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-		        System.out.println("Begin Load Cells:" + timestamp);
+		        //System.out.println("Begin Load Cells:" + timestamp);
 				loadWorkSheetCells2(wbss, sheet, strArr, 1, ";");
 				Timestamp timestamp2 = new Timestamp(System.currentTimeMillis());
-		        System.out.println("End Load Cells:" + timestamp2);
+		       // System.out.println("End Load Cells:" + timestamp2);
 				
 				
 				writeExcelFile(wbss, res, fileName );

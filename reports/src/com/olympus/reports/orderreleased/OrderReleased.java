@@ -47,7 +47,7 @@ public class OrderReleased extends HttpServlet {
 		static String propFile = "C:\\Java_Dev\\props\\Rapport.prop";		
 		//static String sqlFile = "C:\\Java_Dev\\props\\sql\\orderReleasedApp\\ordersReleased_fixedDate_v4_app.sql"; // orig query
 
-		static String sqlFile = "C:\\Java_Dev\\props\\sql\\orderReleasedApp\\ordersReleased_v5_app.sql";
+		static String sqlFile = "C:\\Java_Dev\\props\\sql\\orderReleasedApp\\ordersReleased_v6_app.sql";
 		
 		static String sqlFileIL = "C:\\Java_Dev\\props\\sql\\orderReleasedApp\\getcommDate.sql";
 		
