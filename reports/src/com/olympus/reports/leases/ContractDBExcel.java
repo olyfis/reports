@@ -8,6 +8,7 @@ import java.io.FileWriter;
 	import java.io.IOException;
 	import java.io.OutputStream;
 	import java.sql.Timestamp;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 	import java.util.Date;
@@ -29,6 +30,8 @@ import org.apache.poi.ss.usermodel.*;
 	import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 	import org.apache.poi.xssf.usermodel.XSSFSheet;
 	import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+	 
+	import org.apache.poi.ss.usermodel.CreationHelper;
 
 	import com.olympus.olyexcel.OlyExcel;
 	import com.olympus.olyutil.Olyutil;
@@ -57,7 +60,9 @@ import com.opencsv.CSVReader;
 			        //SimpleDateFormat myFormat = new SimpleDateFormat("yyyy-MM-dd");
 			        
 					SimpleDateFormat fromUser = new SimpleDateFormat("yyyy-MM-dd"); 
-			        SimpleDateFormat myFormat = new SimpleDateFormat("MM/dd/yyyy");
+			       // SimpleDateFormat myFormat = new SimpleDateFormat("MM/dd/yyyy");
+			        SimpleDateFormat myFormat = new SimpleDateFormat("M/d/yyyy");
+			        
 			        
 
 			        try {
@@ -71,7 +76,7 @@ import com.opencsv.CSVReader;
 					
 					
 					
-					return(dateMyFormat);
+					return(dateMyFormat.trim());
 			 
 				 
 				}
@@ -217,71 +222,7 @@ import com.opencsv.CSVReader;
 					}
 				}
 			}	
-			/**
-			 * @throws IOException *********************************************************************************************************************************/
-			public static void loadWorkSheetCellsOLD(SXSSFWorkbook wbss,  Sheet sheet, ArrayList<String> strArr, int rowNum, String sep) throws IOException {
-				String[] strSplitArr = null;
-				long assetID = 0;
-				double equipCost = 0.0;
-				CellStyle style = wbss.createCellStyle();
-				CreationHelper createHelper = wbss.getCreationHelper();
-				Cell cell = null;
-				int i = 0;
-				Timestamp timestampS = new Timestamp(System.currentTimeMillis());
-		        //System.out.println("Begin write tokens:" + timestampS);
-				for (String str : strArr) { // iterating ArrayList
-					//System.out.println("*** (" + i++ + ") -- loadWorkSheetCells(): " + str);
-					Row row = sheet.createRow(rowNum++);
-					strSplitArr = Olyutil.splitStr(str, sep);
-					int colNum = 0;
-					for (String token : strSplitArr) {
-						  cell = row.createCell(colNum);
-						  
-						//System.out.print(token + "--");
-						if (colNum == 15) {		
-							if (token.contains("$")) {
-								System.out.print("** 15:" + token + "--");
-							}
-							String nTok = token.replaceAll("$", "").replaceAll("/", ".");
-							//String nTok2 = nTok.replaceAll("$", "");
-							
-							 cell.setCellValue((long) Olyutil.strToDouble(nTok));
-						} else if (colNum == 18) {
-							if (token.contains("$")) {
-								System.out.print("** 18:" + token + "--");
-							}
-							 cell.setCellValue((double) Olyutil.strToDouble(token.replaceAll("$", "")));
-						} else if (colNum == 6 || colNum == 19 || colNum == 29 || colNum == 30 || colNum == 33 ) { 
-							String nDate = formatDate(token);
-							//System.out.println("Col=" + colNum + " -- DF=" + nDate);
-							//style.setDataFormat(createHelper.createDataFormat().getFormat("MM/dd/yyyy"));
-							style.setDataFormat(createHelper.createDataFormat().getFormat("yyyy-MM-dd"));
-							cell.setCellValue(token);
-							cell.setCellStyle(style);
-							/*
-							if (token instanceof String) {
-								cell.setCellValue((String) nDate);
-							}			
-						*/
-						} else {
-							if (token instanceof String) {
-								if ( token.equals("null") || Olyutil.isNullStr(token)) {
-									 cell.setCellValue((String) "");
-								} else {
-									 cell.setCellValue((String) token);
-								}			
-							}
-						}
-						setBorder(style, cell);
-						colNum++;
-					} // End for token
-					
-					//System.out.println();
-				} //End for str
-				Timestamp timestampE = new Timestamp(System.currentTimeMillis());
-		        System.out.println("End write tokens:" + timestampE);
-			 
-			}
+			
 			/**
 			 * @throws IOException *********************************************************************************************************************************/
 			public static void loadWorkSheetCells2(SXSSFWorkbook wbss,  Sheet sheet, ArrayList<String> strArr, int rowNum, String sep) throws IOException {
@@ -296,7 +237,7 @@ import com.opencsv.CSVReader;
 				//workBook = new SXSSFWorkbook();
 	           // sheet = (SXSSFSheet) workBook.createSheet("Sheet");
 	 
-	     
+		        Date date1 = null;
 	          
 				Timestamp timestampS = new Timestamp(System.currentTimeMillis());
 		        System.out.println("Begin write tokens:" + timestampS);
@@ -324,9 +265,16 @@ import com.opencsv.CSVReader;
 							String nDate = formatDate(token);
 							//System.out.println("Col=" + colNum + " -- DF=" + nDate);
 							//style.setDataFormat(createHelper.createDataFormat().getFormat("MM/dd/yyyy"));
-							style.setDataFormat(createHelper.createDataFormat().getFormat("MM/dd/yyyy"));
-							cell.setCellValue(nDate);
+							//style.setDataFormat(createHelper.createDataFormat().getFormat("mm/dd/yyyy"));
+							//wbss.createDataFormat().getFormat("dd-mm-yyyy");
+							style.setDataFormat(wbss.createDataFormat().getFormat("dd/mm/yyyy"));
+						
 							cell.setCellStyle(style);
+						
+							//nDate = nDate.replaceAll("^0+(?=.)", "");
+						
+							cell.setCellValue(nDate.trim());
+							System.out.println("Col=" + colNum + " -- DF=" + nDate + "-- Tok=" + token + "--");
 							/*
 							if (token instanceof String) {
 								cell.setCellValue((String) nDate);
