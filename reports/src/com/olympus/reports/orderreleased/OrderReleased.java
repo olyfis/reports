@@ -69,7 +69,11 @@ public class OrderReleased extends HttpServlet {
 			id = items[0];
 			for (int k = 0; k < items.length; k++) {
 				if (k == 14) {
+					//System.out.println("***^^B^^*** k=" + k + "-- ContactID:" +   contractMap.get(id)  + "-- Item=" + items[k]);
+					 
 					newStr += contractMap.get(id) + ";" + items[k] + ";";
+					 
+					
 				} else {
 					newStr += items[k] + ";";
 				}

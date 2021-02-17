@@ -23,6 +23,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import com.olympus.olyutil.Olyutil;
 import com.olympus.olyutil.excel.OlyExcel;
 
+// Run: http://localhost:8181/reports/orderrel?startDate=2021-02-01&endDate=2021-02-10
 
 @WebServlet("/orexcel")
 public class OrderReleasedExcel  extends HttpServlet {
@@ -43,7 +44,7 @@ public class OrderReleasedExcel  extends HttpServlet {
         //SimpleDateFormat myFormat = new SimpleDateFormat("yyyy-MM-dd");
         
 		SimpleDateFormat fromUser = new SimpleDateFormat("yyyy-MM-dd"); 
-        SimpleDateFormat myFormat = new SimpleDateFormat("MM/dd/yyyy");
+        SimpleDateFormat myFormat = new SimpleDateFormat("M/d/yyyy");
         
 
         try {
@@ -71,17 +72,40 @@ public class OrderReleasedExcel  extends HttpServlet {
 		double accountRes = 0.0;
 		double cogs = 0.0;
 		String sn = "";
+		
+		ArrayList<String> strArr2 = new ArrayList<String>();
+		String[] splitArr = null;
+		String newStr = "";
+		
+		for (String str : strArr) {
+			int i = 0;
+			splitArr = Olyutil.splitStr(str, sep);	
+			//System.out.println("*****^^^^ SZ=" +   splitArr.length   +   "******** Str=" +str);
+			for (String tk : splitArr) {
+				if ( i != 14) {
+					newStr += tk + ";";
+				}
+				
+				i++;
+			}
+			//System.out.println("************* newStr=" + newStr);
+			strArr2.add(newStr);
+			newStr = "";
+			
+		}
+		
 	 
 		//System.out.println("************* strArr=" + strArr.toString());
 		int j = 0;
-		for (String str : strArr) { // iterating ArrayList
+		for (String str : strArr2) { // iterating ArrayList
 				
 			Row row = sheet.createRow(rowNum++);
 			strSplitArr = Olyutil.splitStr(str, sep);	
 			int colNum = 0;
 			for (String token : strSplitArr) {
 				Cell cell = row.createCell(colNum);
-				 if (colNum == 3 || colNum == 14) {
+		
+				if (colNum == 3 ) {
 					String nDate = formatDate(token);
 					//System.out.println("Col=" + colNum + " -- DF=" + nDate);
 					if (token instanceof String) {
@@ -89,7 +113,7 @@ public class OrderReleasedExcel  extends HttpServlet {
 					}	
 										
 					
-				} else {			
+				}	else {			
 					if (token instanceof String) {
 						cell.setCellValue((String) token.replaceAll("null", ""));
 					}
@@ -108,7 +132,7 @@ public class OrderReleasedExcel  extends HttpServlet {
 	// Service method
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-		String headerFilenameBRSummary = "C:\\Java_Dev\\props\\headers\\OrdRelAppHdr.txt";
+		String headerFilenameBRSummary = "C:\\Java_Dev\\props\\headers\\OrdRelAppHdr2.txt";
 		
 		XSSFWorkbook workbook = null;
 		XSSFSheet sheet = null;
