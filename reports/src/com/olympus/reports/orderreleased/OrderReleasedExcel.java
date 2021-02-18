@@ -43,8 +43,8 @@ public class OrderReleasedExcel  extends HttpServlet {
 		//SimpleDateFormat fromUser = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS"); 
         //SimpleDateFormat myFormat = new SimpleDateFormat("yyyy-MM-dd");
         
-		SimpleDateFormat fromUser = new SimpleDateFormat("yyyy-MM-dd"); 
-        SimpleDateFormat myFormat = new SimpleDateFormat("M/d/yyyy");
+		SimpleDateFormat fromUser = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS"); 
+        SimpleDateFormat myFormat = new SimpleDateFormat("M/d/yyyy HH:mm:ss a");
         
 
         try {
@@ -106,8 +106,9 @@ public class OrderReleasedExcel  extends HttpServlet {
 				Cell cell = row.createCell(colNum);
 		
 				if (colNum == 3 ) {
+					//System.out.println("Col=" + colNum + " -- TK=" + token);
 					String nDate = formatDate(token);
-					//System.out.println("Col=" + colNum + " -- DF=" + nDate);
+					//System.out.println("**** Formatted -- Col=" + colNum + " -- DF=" + nDate);
 					if (token instanceof String) {
 						cell.setCellValue((String) nDate);
 					}	
