@@ -44,7 +44,7 @@ public class OrderReleasedExcel  extends HttpServlet {
         //SimpleDateFormat myFormat = new SimpleDateFormat("yyyy-MM-dd");
         
 		SimpleDateFormat fromUser = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS"); 
-        SimpleDateFormat myFormat = new SimpleDateFormat("M/d/yyyy HH:mm:ss a");
+        SimpleDateFormat myFormat = new SimpleDateFormat("M/d/yyyy h:mm:ss a");
         
 
         try {
