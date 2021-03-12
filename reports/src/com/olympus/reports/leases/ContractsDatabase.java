@@ -87,8 +87,8 @@ public class ContractsDatabase extends HttpServlet {
 			se.printStackTrace();
 		} finally {
 			try {
-				if (stmt != null) {
-					stmt.close();
+				if (statement != null) {
+					statement.close();
 				}
 				if (con != null) {
 					con.close();
