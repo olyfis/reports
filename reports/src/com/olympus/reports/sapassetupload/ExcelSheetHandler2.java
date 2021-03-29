@@ -6,11 +6,11 @@ import org.apache.poi.ss.util.CellReference;
 import org.apache.poi.xssf.eventusermodel.XSSFSheetXMLHandler;
 import org.apache.poi.xssf.usermodel.XSSFComment;
 
-public class ExcelSheetHandler implements XSSFSheetXMLHandler.SheetContentsHandler  {
+public class ExcelSheetHandler2 implements XSSFSheetXMLHandler.SheetContentsHandler  {
 private final StringBuilder sb = new StringBuilder();
 private final StringBuilder line = new StringBuilder();
     
- 
+private int rowNumber;
 
 public void startSheet(String sheetName) {
     sb.append("<sheet name=\"").append(sheetName).append(">");
@@ -24,6 +24,8 @@ public void endSheet() {
 public void startRow(int rowNum) {
     //sb.append("\n Bnum=\"").append(rowNum).append("^");
     sb.append("\n").append(rowNum +1 ).append("^");
+    rowNumber = rowNum +1 ;
+    //values = new LinkedHashMap<>();
 }
 
 @Override
@@ -37,8 +39,10 @@ public void endRow(int rowNum) {
 public void cell(String cellReference, String formattedValue, XSSFComment comment) {
     formattedValue = (formattedValue == null || formattedValue.equals("")) ? "--N/A" : formattedValue;
     
-    System.out.println("**CELL:" +  cellReference.substring(0, 2) + "-- R=" + cellReference); 
+    System.out.println("** Row=" + rowNumber + "**CELL:" +  
+    cellReference.substring(0, 2) + "-- R=" + cellReference + "-- CA=" + cellReference.charAt(0)); 
     //System.out.println("val=" + formattedValue);
+    
     if (comment == null) {
         //sb.append("\n\t<td ref=\"").append(cellReference).append("\">").append(formattedValue).append("</td>");
         
@@ -106,12 +110,15 @@ public void cell(String cellReference, String formattedValue, XSSFComment commen
 
 @Override
 public void headerFooter(String text, boolean isHeader, String tagName) {
+	/*
     if (isHeader) {
+    	 
         sb.append("<header tagName=\"").append(tagName).append("\">").append(text).append("</header>");
     } else {
         sb.append("<footer tagName=\"").append(tagName).append("\">").append(text).append("</footer>");
 
     }
+    */
 }
 
 @Override

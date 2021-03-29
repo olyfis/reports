@@ -20,12 +20,16 @@ import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.openxml4j.exceptions.OpenXML4JException;
 import org.apache.poi.openxml4j.opc.OPCPackage;
 import org.apache.poi.ss.usermodel.DataFormatter;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.binary.XSSFBSharedStringsTable;
 import org.apache.poi.xssf.binary.XSSFBSheetHandler;
 import org.apache.poi.xssf.binary.XSSFBStylesTable;
 import org.apache.poi.xssf.eventusermodel.XSSFBReader;
 import org.apache.poi.xssf.extractor.XSSFBEventBasedExcelExtractor;
 import org.apache.poi.xssf.extractor.XSSFEventBasedExcelExtractor;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.apache.xmlbeans.XmlException;
 import org.xml.sax.SAXException;
 
@@ -33,6 +37,7 @@ import org.xml.sax.SAXException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 
 @WebServlet("/sapassetupt")
@@ -41,15 +46,15 @@ public class SAPassetUpload extends HttpServlet {
 	private final Logger logger = Logger.getLogger(SAPassetUpload.class.getName()); // define logger
 	/*****************************************************************************************************************************************************/
 	public static void printStrArray_2(ArrayList<String> strArr, String tag) {
-		//int i = 0;
+		 int i = 0;
 		for (String str : strArr) { // iterating ArrayList
-			//if ( i > 86425 && i < 86440) {
+			 if ( i > 172321 && i < 173340) {
 				
 			//if ( i > 86420 && i < 86440) {	
 				System.out.println(tag + str);
 				
-			//}
-			//i++;
+			 }
+			 i++;
 			
 		}
 		// System.out.println(names[index]);
@@ -58,16 +63,20 @@ public class SAPassetUpload extends HttpServlet {
 	public static ArrayList<String> readXlsbFile(String xlsbFileName) throws IOException {
 		ArrayList<String> tgtArr = new ArrayList<String>();
        
-        ExcelSheetHandler  exlSheetHandler = new ExcelSheetHandler();       
+        ExcelSheetHandler2  exlSheetHandler = new ExcelSheetHandler2();       
         OPCPackage pkg;
         XSSFEventBasedExcelExtractor ext = null;
         try {
             pkg = OPCPackage.open(xlsbFileName);
+            
+           
+            /*****************************************************************************************************/
+            
             XSSFBReader r = new XSSFBReader(pkg);
             XSSFBSharedStringsTable sst = new XSSFBSharedStringsTable(pkg);
             XSSFBStylesTable xssfbStylesTable = r.getXSSFBStylesTable();
             XSSFBReader.SheetIterator it = (XSSFBReader.SheetIterator) r.getSheetsData();
-
+ 
             List<String> sheetTexts = new ArrayList<>();
             InputStream is = null;
             
@@ -155,7 +164,7 @@ public class SAPassetUpload extends HttpServlet {
 	// Service method
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-		String xlsbFileName = "C:\\TEMP\\SAP_Asset_Upload\\sap_AU.xlsb";
+		String xlsbFileName = "C:\\Java_Dev\\props\\SAP_Upload\\SAP_Asset_Upload\\sap_AU.xlsb";
 		String sep = "\\^";
 		String[] strSplit = null;
 		String[] ss = null;
@@ -174,7 +183,9 @@ public class SAPassetUpload extends HttpServlet {
 		String tgtID = "101-0010095-033";
 		//System.out.println("arrSZ:" + strArr.size());
 		 //Olyutil.printStrArray(strArr);
-		//printStrArray_2(strArr, ("***"));
+//printStrArray_2(strArr, ("***"));
+		
+		
 		int i=0;
 		 //System.out.println("S=" + strArr.size());
 		for (String str : strArr) {
