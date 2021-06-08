@@ -1,4 +1,6 @@
-package com.olympus.reports.techupgradeassets;
+package com.olympus.reports.bfq180;
+
+ 
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -59,7 +61,7 @@ import com.olympus.olyutil.Olyutil;
  
 
 
-@WebServlet("/tuaexcel2")
+@WebServlet("/bfq180excel")
 public class WriteExcel extends HttpServlet {
 	
 /****************************************************************************************************************************************************/
@@ -107,10 +109,10 @@ public class WriteExcel extends HttpServlet {
 		
 		// String contractHeaderFile =
 		// "C:\\Java_Dev\\props\\headers\\NBVA\\NBVA_ContractHrd.txt";
-		String headerFile = "C:\\Java_Dev\\props\\headers\\techAssetHdr.txt";
+		String headerFile = "C:\\Java_Dev\\props\\headers\\bfq180_Hdr.txt";
 		// String ageFile = "C:\\Java_Dev\\props\\nbvabuy\\dailyAge.csv";
-		String FILE_NAME = "TechUpgradeAssets_Report_" + dateStamp + ".xlsx";
-		String excelTemplate = "C:\\Java_Dev\\props\\excel\\templates\\tua_template.xlsx";
+		String FILE_NAME = "BFQ180_Report_" + dateStamp + ".xlsx";
+		String excelTemplate = "C:\\Java_Dev\\props\\excel\\templates\\bfq180_template.xlsx";
 		XSSFWorkbook workbook = null;
 		XSSFSheet sheet = null;
 		strArr = (ArrayList<String>) session.getAttribute("strArr");
@@ -123,7 +125,7 @@ public class WriteExcel extends HttpServlet {
 		
 		workbook = new XSSFWorkbook(new FileInputStream(excelTemplate));
 		FileOutputStream fileOut = new FileOutputStream(FILE_NAME);
-		String excelTemplateNew = "TUA_Report_" + dateStamp + ".xlsx";
+		String excelTemplateNew = "BFQ180_Report_" + dateStamp + ".xlsx";
 		//doWriteData(workbook, "TUA", strArr, dateStamp, sep);
 		
 		// Create Excel file on client
@@ -131,7 +133,7 @@ public class WriteExcel extends HttpServlet {
 		 
 			WriteExcelFile writeExcel = new WriteExcelFile();
 			workbook = writeExcel.newWorkbook();
-			sheet = writeExcel.newWorkSheet(workbook, "Tech Upgrade Assets");
+			sheet = writeExcel.newWorkSheet(workbook, "BFQ180");
 			writeExcel.loadHeader(workbook, sheet, headerArr);
 			//System.out.println("** Call loadWorkSheet");
 			writeExcel.loadWorkSheet(workbook, sheet, strArr, 1, ";");
@@ -163,3 +165,4 @@ public class WriteExcel extends HttpServlet {
 	
 }
  
+
