@@ -13,7 +13,9 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Properties;
+import java.util.Set;
 import java.util.logging.Handler;
 import java.util.logging.Logger;
 
@@ -39,7 +41,7 @@ public class TechUpgradeAssets  extends HttpServlet{
 	static String s = null;
 	static private PreparedStatement statement;
 	static String propFile = "C:\\Java_Dev\\props\\unidata.prop";
-	static String sqlFile = "C:\\Java_Dev\\props\\sql\\TechUpgradeAssets.sql";
+	static String sqlFile = "C:\\Java_Dev\\props\\sql\\TechUpgradeAssets_V2.sql";
 
 	/****************************************************************************************************************************************************/
 	public static ArrayList<String> getDbData() throws IOException {
@@ -99,13 +101,85 @@ public class TechUpgradeAssets  extends HttpServlet{
 	}
 
 	/*****************************************************************************************************/
+	public HashMap<String, Double>   getEquipTotal(ArrayList<String> strArr) throws IOException {
+		HashMap<String, Double> map = new HashMap<String, Double>();
 
+		String[] items = null;
+		String key = "";
+		String cust = "";
+		String commDate = "";
+		double tot = 0.00;
+		
+		// Positional data -- Update if query changes
+		for (String str : strArr) { // iterating ArrayList
+			items = str.split(";");
+			//System.out.println("**^B^** Cust=" + items[1] + "--");
+			cust = items[1].replaceAll(" ", "_");
+			//System.out.println("**^A^** Cust=" + cust + "--");
+			
+			
+			commDate = items[3];
+			
+			if (Olyutil.isNullStr(items[10]) ) { // Rollover == N
+				key = items[0] + "^N^" + cust + "^" + commDate + "^" + items[9].replaceAll(" ", "^");
+				//System.out.println("** ID=" + items[0] + "-- R=N -- Key=" + key);
+				
+				if (map.containsKey(key)) {
+					
+					tot = map.get(key);
+					tot += Olyutil.strToDouble(items[2]);
+					map.put(key, tot);
+					//System.out.println("** ID=" + items[0] + "-- R=N -- Key=" + key + "-- Total=" + tot + "--");
+					
+				} else {
+					map.put(key, Olyutil.strToDouble(items[2]));
+				}
+				
+			} else {
+				key = items[0] + "^Y^" + cust + "^" + commDate + "^" + items[9].replaceAll(" ", "^");
+				//System.out.println("** ID=" + items[0] + "-- R=Y -- Key=" + key);
+				
+				if (map.containsKey(key)) {
+					
+					tot = map.get(key);
+					tot += Olyutil.strToDouble(items[2]);
+					map.put(key, tot);
+					//System.out.println("** ID=" + items[0] + "-- R=N -- Key=" + key + "-- Total=" + tot + "--");
+					
+				} else {
+					map.put(key, Olyutil.strToDouble(items[2]));
+				}
+				
+				
+			}
+		
+			key = "";
+		}
+		//displayHashMap(map);
+		return(map);
+	}
 	/*****************************************************************************************************/
+	/****************************************************************************************************************************************************/
+	public static boolean displayHashMap(HashMap<String, Double> hashMap) {
+		boolean status = true;
+		
+		Set<String> keys = hashMap.keySet();  //get all keys
+		for(String key: keys) {
+
+		  System.out.println("**----** Key=" + key + "-- Value=" + hashMap.get(key) + "--");
+		}
+		return(status);
+		
+	}
+	/****************************************************************************************************************************************************/
+
+
 
 	// Service method
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		// Begin setup logging
+		HashMap<String, Double> mapRtn = new HashMap<String, Double>();
 		Date logDate = null;
 		String dateFmt = "";
 		String logFileName = "techupgradeassets.log";
@@ -138,11 +212,16 @@ public class TechUpgradeAssets  extends HttpServlet{
 		
 		sep = ";";
 		strArr = getDbData();
+		mapRtn = getEquipTotal( strArr);
+		//System.out.println("*** Begin display hashMap");
+		//displayHashMap(mapRtn);
+		//System.out.println("*** End display hashMap");
+		
 		 // Olyutil.printStrArray(strArr);
 		String formUrl = "formUrl";
 		String formUrlValue = "/reports/tuaexcel2";
 		req.getSession().setAttribute(formUrl, formUrlValue);
-
+		req.getSession().setAttribute("mapRtn", mapRtn);
 		req.getSession().setAttribute("strArr", strArr);
 		// req.getSession().setAttribute(paramName, paramValue);
 		logDate = Olyutil.getCurrentDate();

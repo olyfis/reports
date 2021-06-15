@@ -62,6 +62,22 @@ import com.olympus.olyutil.Olyutil;
 @WebServlet("/tuaexcel2")
 public class WriteExcel extends HttpServlet {
 	
+	/***********************************************************************************************************************************/
+	public static XSSFSheet newWorkSheet(XSSFWorkbook workbook, String label) {
+
+		XSSFSheet sheet = workbook.createSheet(label);
+		return sheet;
+	}
+
+	/***********************************************************************************************************************************/
+	public static XSSFWorkbook newWorkbook() {
+
+		XSSFWorkbook workbook = new XSSFWorkbook();
+		return workbook;
+	}
+
+	/****************************************************************************************************************************************************/
+	
 /****************************************************************************************************************************************************/
 	
 	 
@@ -103,7 +119,8 @@ public class WriteExcel extends HttpServlet {
 		String sep = ";";
 		ArrayList<String> headerArr = new ArrayList<String>();
 		ArrayList<String> strArr = new ArrayList<String>();
-		
+		HashMap<String, Double> mapRtn = new HashMap<String, Double>();
+
 		
 		// String contractHeaderFile =
 		// "C:\\Java_Dev\\props\\headers\\NBVA\\NBVA_ContractHrd.txt";
@@ -113,8 +130,10 @@ public class WriteExcel extends HttpServlet {
 		String excelTemplate = "C:\\Java_Dev\\props\\excel\\templates\\tua_template.xlsx";
 		XSSFWorkbook workbook = null;
 		XSSFSheet sheet = null;
-		strArr = (ArrayList<String>) session.getAttribute("strArr");
+		XSSFSheet sheetTot = null;
 		
+		strArr = (ArrayList<String>) session.getAttribute("strArr");
+		mapRtn = (HashMap<String, Double>) session.getAttribute("mapRtn");
 		// displayDataMapStr( invDateMapDB, "From database");
 		//System.out.println("** Call Read Header");
 		headerArr = Olyutil.readInputFile(headerFile);
@@ -123,7 +142,7 @@ public class WriteExcel extends HttpServlet {
 		
 		workbook = new XSSFWorkbook(new FileInputStream(excelTemplate));
 		FileOutputStream fileOut = new FileOutputStream(FILE_NAME);
-		String excelTemplateNew = "TUA_Report_" + dateStamp + ".xlsx";
+		//String excelTemplateNew = "TUA_Report_" + dateStamp + ".xlsx";
 		//doWriteData(workbook, "TUA", strArr, dateStamp, sep);
 		
 		// Create Excel file on client
@@ -136,6 +155,12 @@ public class WriteExcel extends HttpServlet {
 			//System.out.println("** Call loadWorkSheet");
 			writeExcel.loadWorkSheet(workbook, sheet, strArr, 1, ";");
 			//BufferedInputStream in = null; 
+			sheetTot = newWorkSheet(workbook, "GI Upgrades");
+			writeExcel.loadTotalWorkSheet(workbook, sheetTot, strArr, ";", mapRtn);
+			
+			
+			
+			
 			try {
 				// HttpServletResponse response = getResponse(); // get ServletResponse
 				res.setContentType("application/vnd.ms-excel"); // Set up mime type

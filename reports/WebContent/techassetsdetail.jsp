@@ -207,6 +207,13 @@ public String  buildCells(JspWriter out, ArrayList<String> dataArr  ) throws IOE
 						cells += "<td class=\"odd\">" + dollarVal + "</td>";
 
 						//System.out.println("Val=" +   token_list[x]  + "--");
+					} else if (x == 10){
+						if (Olyutil.isNullStr(token_list[x])) {
+							cells += "<td class=\"odd\">" + "N" + "</td>";
+
+						} else {
+							cells += "<td class=\"odd\">" + "Y" + "</td>";
+						}
 					} else {
 						cells += "<td class=\"odd\">" + token_list[x] + "</td>";
 
