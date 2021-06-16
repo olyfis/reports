@@ -59,7 +59,7 @@ public class WriteExcelFile  {
 /***********************************************************************************************************************************/
 	
 	// Active loadWS Totals
-	public static void loadTotalWorkSheet(XSSFWorkbook workbook, XSSFSheet sheet, ArrayList<String> strArr, String sep, HashMap<String, Double> map) {
+	public static void loadTotalWorkSheet(XSSFWorkbook workbook, XSSFSheet sheet, ArrayList<String> strArr, String sep, HashMap<String, Double> map, HashMap<String, Double> mapTEC) {
 		 String[] strSplit  = null;
 		String id = "";
 		String rollover = "";
@@ -67,10 +67,13 @@ public class WriteExcelFile  {
 		String cust = "";
 		String commDate = "";
 		double totals = 0.00;
+		double totalsTEC = 0.00;
 		
 		//displayHashMap(map);
 		Set<String> keys = map.keySet();  //get all keys
 		//int colNum = 0;
+		Set<String> keysTEC = mapTEC.keySet();  //get all keys
+		
 		Row row = sheet.createRow(0);
 		Cell cell = row.createCell(0);
 		//sheet.autoSizeColumn(0);
@@ -89,7 +92,7 @@ public class WriteExcelFile  {
 		cell.setCellValue((String) "Rollover");
 		
 		cell = row.createCell(5);
-		cell.setCellValue((String) "Total");
+		cell.setCellValue((String) "Tech Equipment Costs");
 		
 		
 		int rowNum = 1;
@@ -103,7 +106,7 @@ public class WriteExcelFile  {
 			cust = strSplit[2];
 			commDate = strSplit[3];
 			totals = map.get(key);
-			
+			totalsTEC = mapTEC.get(key);
 			//System.out.println("**--LTWS--** Key=" + key + "-- Value=" + map.get(key) + "-- Cust=" + cust + "--");
 			
 			//System.out.println("**--LTWS-- SZ="  +  strSplit.length   + "-- ID=" + id + "-- Rollover=" + rollover + "--");
@@ -122,11 +125,12 @@ public class WriteExcelFile  {
 			cell.setCellValue((double) totals);
 			cell = row.createCell(4);
 			cell.setCellValue((String) rollover);
-			
+			cell = row.createCell(5);
+			cell.setCellValue((double) totalsTEC);
 			
 		}
 		
-		 for (int columnIndex = 0; columnIndex < 5; columnIndex++) {
+		 for (int columnIndex = 0; columnIndex < 6; columnIndex++) {
             sheet.autoSizeColumn(columnIndex);
         }
 		

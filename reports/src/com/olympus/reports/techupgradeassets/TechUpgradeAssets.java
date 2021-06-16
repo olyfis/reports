@@ -101,7 +101,7 @@ public class TechUpgradeAssets  extends HttpServlet{
 	}
 
 	/*****************************************************************************************************/
-	public HashMap<String, Double>   getEquipTotal(ArrayList<String> strArr) throws IOException {
+	public HashMap<String, Double>   getEquipTotal_ORIG(ArrayList<String> strArr) throws IOException {
 		HashMap<String, Double> map = new HashMap<String, Double>();
 
 		String[] items = null;
@@ -159,6 +159,75 @@ public class TechUpgradeAssets  extends HttpServlet{
 		return(map);
 	}
 	/*****************************************************************************************************/
+	
+	
+	public HashMap<String, Double>   getEquipTotal(ArrayList<String> strArr, String type) throws IOException {
+		HashMap<String, Double> map = new HashMap<String, Double>();
+
+		String[] items = null;
+		String key = "";
+		String cust = "";
+		String commDate = "";
+		double tot = 0.00;
+		String colTotal = "";
+		
+		// Positional data -- Update if query changes
+		for (String str : strArr) { // iterating ArrayList
+			items = str.split(";");
+			//System.out.println("**^B^** Cust=" + items[1] + "--");
+			cust = items[1].replaceAll(" ", "_");
+			//System.out.println("**^A^** Cust=" + cust + "--");
+			
+			
+			commDate = items[3];
+			if (type.equals("CEC")) {
+				colTotal = items[2];
+			} else if (type.equals("TEC")) {
+				colTotal = items[6];
+			}
+			
+			
+			
+			if (Olyutil.isNullStr(items[10]) ) { // Rollover == N
+				key = items[0] + "^N^" + cust + "^" + commDate + "^" + items[9].replaceAll(" ", "^");
+				//System.out.println("** ID=" + items[0] + "-- R=N -- Key=" + key);
+				
+				if (map.containsKey(key)) {
+					
+					tot = map.get(key);
+					tot += Olyutil.strToDouble(colTotal);
+					map.put(key, tot);
+					//System.out.println("** ID=" + items[0] + "-- R=N -- Key=" + key + "-- Total=" + tot + "--");
+					
+				} else {
+					map.put(key, Olyutil.strToDouble(colTotal));
+				}
+				
+			} else {
+				key = items[0] + "^Y^" + cust + "^" + commDate + "^" + items[9].replaceAll(" ", "^");
+				//System.out.println("** ID=" + items[0] + "-- R=Y -- Key=" + key);
+				
+				if (map.containsKey(key)) {
+					
+					tot = map.get(key);
+					tot += Olyutil.strToDouble(colTotal);
+					map.put(key, tot);
+					//System.out.println("** ID=" + items[0] + "-- R=N -- Key=" + key + "-- Total=" + tot + "--");
+					
+				} else {
+					map.put(key, Olyutil.strToDouble(colTotal));
+				}
+				
+				
+			}
+		
+			key = "";
+		}
+		//displayHashMap(map);
+		return(map);
+	}
+	
+	
 	/****************************************************************************************************************************************************/
 	public static boolean displayHashMap(HashMap<String, Double> hashMap) {
 		boolean status = true;
@@ -180,6 +249,8 @@ public class TechUpgradeAssets  extends HttpServlet{
 	protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		// Begin setup logging
 		HashMap<String, Double> mapRtn = new HashMap<String, Double>();
+		HashMap<String, Double> mapTECRtn = new HashMap<String, Double>();
+		
 		Date logDate = null;
 		String dateFmt = "";
 		String logFileName = "techupgradeassets.log";
@@ -212,7 +283,10 @@ public class TechUpgradeAssets  extends HttpServlet{
 		
 		sep = ";";
 		strArr = getDbData();
-		mapRtn = getEquipTotal( strArr);
+		mapRtn = getEquipTotal( strArr, "CEC");
+		mapTECRtn = getEquipTotal( strArr, "TEC");
+		
+		
 		//System.out.println("*** Begin display hashMap");
 		//displayHashMap(mapRtn);
 		//System.out.println("*** End display hashMap");
@@ -222,6 +296,7 @@ public class TechUpgradeAssets  extends HttpServlet{
 		String formUrlValue = "/reports/tuaexcel2";
 		req.getSession().setAttribute(formUrl, formUrlValue);
 		req.getSession().setAttribute("mapRtn", mapRtn);
+		req.getSession().setAttribute("mapTECRtn", mapTECRtn);
 		req.getSession().setAttribute("strArr", strArr);
 		// req.getSession().setAttribute(paramName, paramValue);
 		logDate = Olyutil.getCurrentDate();

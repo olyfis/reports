@@ -120,7 +120,7 @@ public class WriteExcel extends HttpServlet {
 		ArrayList<String> headerArr = new ArrayList<String>();
 		ArrayList<String> strArr = new ArrayList<String>();
 		HashMap<String, Double> mapRtn = new HashMap<String, Double>();
-
+		HashMap<String, Double> mapTECRtn = new HashMap<String, Double>();
 		
 		// String contractHeaderFile =
 		// "C:\\Java_Dev\\props\\headers\\NBVA\\NBVA_ContractHrd.txt";
@@ -134,6 +134,7 @@ public class WriteExcel extends HttpServlet {
 		
 		strArr = (ArrayList<String>) session.getAttribute("strArr");
 		mapRtn = (HashMap<String, Double>) session.getAttribute("mapRtn");
+		mapTECRtn = (HashMap<String, Double>) session.getAttribute("mapTECRtn");
 		// displayDataMapStr( invDateMapDB, "From database");
 		//System.out.println("** Call Read Header");
 		headerArr = Olyutil.readInputFile(headerFile);
@@ -156,7 +157,7 @@ public class WriteExcel extends HttpServlet {
 			writeExcel.loadWorkSheet(workbook, sheet, strArr, 1, ";");
 			//BufferedInputStream in = null; 
 			sheetTot = newWorkSheet(workbook, "GI Upgrades");
-			writeExcel.loadTotalWorkSheet(workbook, sheetTot, strArr, ";", mapRtn);
+			writeExcel.loadTotalWorkSheet(workbook, sheetTot, strArr, ";", mapRtn, mapTECRtn);
 			
 			
 			
